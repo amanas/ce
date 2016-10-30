@@ -37,8 +37,8 @@
 (def report-delta (atom 5))
 
 ;; Inicialmente, cada objeto lo represento por un mapa con claves
-;; nam (nombre), val (valor) y vol (volumen).
-;;  ej. {:nam "objeto 1" :val 1 :vol 3}
+;; val (valor) y vol (volumen).
+;;  ej. {:val 1 :vol 3}
 ;; Necesitamos una función que genere una estructura con los objetos iniciales
 ;; del problema optimizada para accesos y para economía de computación.
 ;; Para ello:
@@ -58,9 +58,9 @@
        (apply merge)))
 
 ;; Decido además representar cada individuo como un vector de genes binarios.
-;; Por ejemplo, este individuo representa meter en la mochila
+;; Por ejemplo, el individuo [true false true] representa meter en la mochila
 ;; el primer y tercer objetos (una vez reordenados con la función
-;; arrange-objects): [true false true]
+;; arrange-objects)
 
 ;; Función que devuelve el valor de aptitud o conveniencia de un individuo.
 ;; Procedimiento:
@@ -146,9 +146,9 @@
 ;;  - generation: la generación en curso
 ;;  - best: el mejor individuo de la generación
 (defn enough-blockage? [generation best]
-  (swap! best-history (fn [h] (if (zero? generation) [] (take @blockage-delta (conj h best)))))
-  (and (<= @blockage-delta generation)
-       (<= (->> @best-history butlast (map rel-fitness) (apply max)) (rel-fitness best))))
+  (swap! best-history (fn [h] (if (zero? generation) [] (take @blockage-delta (concat [best] h)))))
+  (when (< @blockage-delta generation)
+       (<= (->> @best-history butlast (map rel-fitness) (apply max)) (rel-fitness (last @best-history)))))
 
 ;; Determina si la evolución ha llegado a su fin, bien por haberse alcanzado
 ;; demasiadas generaciones, bien por haberse alcanzado un individuo con
@@ -213,18 +213,4 @@
                                 (butlast (concat [best-parent] offspring))
                                 offspring)]
         (recur (inc generation) elitism-offspring)))))
-
-
-(go-live {:pack-size 100
-          :rand-gen-prob 1/2
-          :population-size 10
-          :first-stochastic-prob 8/10
-          :tournament-round-size 5
-          :replacement true
-          :crossover-prob 8/10
-          :generations-threshold 200
-          :fitness-threshold 98/100
-          :blockage-delta 10
-          :report-delta 1
-          :objects (map (fn [i] {:nam i :val (rand-int 10) :vol (inc (rand-int 5))}) (range 5)) })
 
