@@ -39,14 +39,18 @@
                 dataType: "json"
             }).success(function(data){   
                 try {           
-                    $('#best').html(data.best.map(function(obj) { 
+                    $('#best').html(data.best.map(function(obj, index) { 
+                        console.log(index)
                         if (obj == true) 
-                            return 1;
+                            return '<div style="background-color: yellowgreen; color: gray; display: inline-block">1</div>';
                         else 
-                            return 0;
+                            return '<div style="background-color: LightSeaGreen; color: gray; display: inline-block">0</div>';
                     }));
                     $('#config').html(JSON.stringify(data.config, null, 2));
-                    $('#result').html(data.result);
+                    $('#result').html('Status: ' + data.result + 
+                                      '\nGeneration: ' + data.generation + 
+                                      '\nTime elapsed: ' + (data['current-time'] - data['start-time'])/1000 + ' seconds'+ 
+                                      '\nBest individual relative fitness: ' + data['best-rel-fitness']);
                     var data = new google.visualization.arrayToDataTable(data.status);                
                     var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));                
                     chart.draw(data, options);
@@ -77,15 +81,15 @@
           <div class="col-md-12">
               <div id="curve_chart" ></div>   
           </div>
-          <div class="col-md-12">              
+          <div class="col-md-12">   
+              <p>Best individual<p>
+              <div id="best"></div>
+           </div>
+          <div class="col-md-6">              
               <p>Status<p>
               <pre id="result"></pre>
            </div>
-          <div class="col-md-12">              
-              <p>Best individual<p>
-              <pre id="best"></pre>
-           </div>
-          <div class="col-md-12">              
+          <div class="col-md-6">              
               <p>Config<p>
               <pre id="config"></pre>
            </div>
