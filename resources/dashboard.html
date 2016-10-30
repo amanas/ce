@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Andrés Mañas - computación evolutiva</title>
+      
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+ 
+         var options = {
+              title: 'Learning performance',
+              curveType: 'function',
+              interpolateNulls: true,
+              legend: { position: 'right' },
+              vAxis:{
+                  title: 'Relative fitness (best fitness / pack size)'
+              },
+              hAxis:{
+                  title: 'Generation'
+              }
+          };
+        
+        function drawChart() {
+            $.ajax({
+                type: "GET",
+                url: "http://amanas.ml/ce/p1/backend.php",
+                dataType: "json"
+            }).success(function(data){   
+                try {           
+                    $('#best').html(data.best.map(function(obj) { 
+                        if (obj == true) 
+                            return 1;
+                        else 
+                            return 0;
+                    }));
+                    $('#config').html(JSON.stringify(data.config, null, 2));
+                    var data = new google.visualization.arrayToDataTable(data.status);                
+                    var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));                
+                    chart.draw(data, options);
+                } catch (e) {
+                    console.log(e);
+                } finally {
+                    setTimeout(drawChart, 500);
+                }
+            });
+      }
+    </script> 
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+      <div class="container-fluid">
+       <div class="row text-center">
+           <h1>Computación evolutiva - UNED - Andrés Mañas</h1>  <p>&nbsp;</p> 
+       </div>
+       <div class="row">
+          <div class="col-md-4">
+              <div class="row">
+                  <div class="col-md-12"><h3>Best individual</h3> </div>
+                  <div class="col-md-12">
+                   <pre id="best"></pre>
+                  </div>
+                  <div class="col-md-12"><h3>Experiment configuration</h3> </div>
+                  <div  class="col-md-12">
+                   <pre id="config"></pre>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-8">
+              <div id="curve_chart" style="width: 100%; height: 600px"></div>   
+          </div>
+       </div>
+      </div>
+  </body>
+</html>
