@@ -164,9 +164,9 @@
 ;; Devuelve la razón por la que el algoritmo acaba, para poderla reportar.
 (defn done-reason [generation best]
   (cond
-    (enough-generations? generation) "Enough generations lived"
-    (enough-fitness? best) "Enough fitness reached"
-    (enough-blockage? generation best) "Too many generations without improving fitness"
+    (enough-generations? generation) "Done! Enough generations lived"
+    (enough-fitness? best) "Done! Enough fitness reached"
+    (enough-blockage? generation best) "Done! Too many generations without improving fitness"
     :else "Should never happen"))
 
 ;; Construye la nueva generación a partir de la generación actual
@@ -203,7 +203,7 @@
   (set-config config)
   (loop [generation 0
          [best-parent & more :as parents] (->> (rand-population) (sort-by fitness) reverse)]
-    (report-status config generation best-parent (rel-fitness best-parent))
+    (report-status config generation best-parent (rel-fitness best-parent) "running")
     (if (done? generation best-parent)
       (do (report-status config generation best-parent (rel-fitness best-parent) (done-reason generation best-parent))
         best-parent)

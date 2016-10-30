@@ -21,14 +21,14 @@
   ([config generation best rel-fitness]
    (report-status config generation best rel-fitness nil))
   ([config generation best rel-fitness result]
-   (reset! status {:config config
+   (reset! status {:config (dissoc config :objects)
                    :best best
                    :status (if (zero? generation)
                              [["Generation" "Relative fitness"]]
                              (conj (:status @status) [generation rel-fitness]))
                    :result result})
    (when (and generation
-              (:post-delta config)
-              (= 0 (mod generation (:post-delta config))))
+              (:report-delta config)
+              (= 0 (mod generation (:report-delta config))))
      (post-status))))
 
