@@ -1,6 +1,5 @@
 (ns ce.p1
-   (:require [clj-http.client :as http]
-             [cheshire.core :as json]))
+  (:require [ce.utils :refer :all]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Actividad 1: Problema de la mochila binario ;;
@@ -32,7 +31,10 @@
 (def generations-threshold (atom 100))
 ;; Umbral de calidad que, una vez alcanzado, da por finalizado el experimento
 (def fitness-threshold (atom 95/100))
-
+;; Número de generaciones sin mejora del delta que se permiten antes de dar por acabado el exp.
+(def blockage-delta (atom 10))
+;; Cada cuantas generaciones se reporta el estado al web-service en la nube para su visualización.
+(def report-delta (atom 5))
 
 ;; Inicialmente, cada objeto lo represento por un mapa con claves
 ;; nam (nombre), val (valor) y vol (volumen).
@@ -75,6 +77,11 @@
        (filter #(<= % @pack-size))
        last))
 
+;; Calcula el fitness relativo de un individuo (el porcentaje de mochila que rellena)
+;; - individual: el individuo
+(defn rel-fitness [individual]
+  (/ (fitness individual) @pack-size))
+
 ;; Genera aleatoriamente un individuo.
 (defn rand-individual []
   (repeatedly (count @objects) (fn [] (<= (rand) @rand-gen-prob))))
@@ -82,7 +89,6 @@
 ;; Genera aleatoriamente una población.
 (defn rand-population []
   (repeatedly @population-size (fn [] (rand-individual))))
-
 
 ;; Selecciona el primer elmento de una lista con probabilidad first-stochastic-prob.
 ;; De no ser seleccionado, selecciona el primero del resto con probabilidad
@@ -99,10 +105,10 @@
   (loop [population population
          selected []]
     (if (or (empty? population) (<= size (count selected))) selected
-        (let [individual (->> population shuffle (take @tournament-round-size)
-                              (sort-by fitness) reverse first-stochastic)]
-          (recur (if @replacement (remove (partial = individual) population) population)
-                 (conj selected individual))))))
+      (let [individual (->> population shuffle (take @tournament-round-size)
+                            (sort-by fitness) reverse first-stochastic)]
+        (recur (if @replacement (remove (partial = individual) population) population)
+               (conj selected individual))))))
 
 ;; Cruza dos padres por un punto o devuelve los padres tal cual, dependiendo
 ;; de la probabilidad de cruze.
@@ -110,10 +116,10 @@
 ;;  - parent2: segundo padre
 (defn crossover-one-point [parent1 parent2]
   (if (<= (rand) @crossover-prob)
-      (let [point (inc (rand-int (dec (count parent1))))]
-        [(concat (take point parent1) (drop point parent2))
-         (concat (take point parent2) (drop point parent1))])
-      [parent1 parent2]))
+    (let [point (inc (rand-int (dec (count parent1))))]
+      [(concat (take point parent1) (drop point parent2))
+       (concat (take point parent2) (drop point parent1))])
+    [parent1 parent2]))
 
 ;; Muta los genes de un individuo atendiendo a una probabilidad de mutación
 ;; data por 1/número de objetos del individuo.
@@ -132,14 +138,36 @@
 (defn enough-generations? [generation]
   (<= @generations-threshold generation))
 
+;; Variable donde almacenamos los mejores individuos de la historia reciente.
+(def best-history (atom []))
+
+;; Determina si se llevan demasiadas generaciones sin que aparezcan individuos
+;; con fitness mejorado.
+;;  - generation: la generación en curso
+;;  - best: el mejor individuo de la generación
+(defn enough-blockage? [generation best]
+  (swap! best-history (fn [h] (if (zero? generation) [] (take @blockage-delta (conj h best)))))
+  (and (<= @blockage-delta generation)
+       (<= (->> @best-history butlast (map rel-fitness) (apply max)) (rel-fitness best))))
+
 ;; Determina si la evolución ha llegado a su fin, bien por haberse alcanzado
 ;; demasiadas generaciones, bien por haberse alcanzado un individuo con
-;; fitness suficiente
+;; fitness suficiente, bien por llevar demasiadas generaciones sin que se
+;; incremente el fitness.
 ;;  - generation: la generación en curso
 ;;  - best: el mejor individuo de la generación
 (defn done? [generation best]
   (or (enough-generations? generation)
-      (enough-fitness? best)))
+      (enough-fitness? best)
+      (enough-blockage? generation best)))
+
+;; Devuelve la razón por la que el algoritmo acaba, para poderla reportar.
+(defn done-reason [generation best]
+  (cond
+    (enough-generations? generation) "Done! Enough generations lived"
+    (enough-fitness? best) "Done! Enough fitness reached"
+    (enough-blockage? generation best) "Done! Too many generations without improving fitness"
+    :else "Should never happen"))
 
 ;; Construye la nueva generación a partir de la generación actual
 ;; aplicando el modelo generacional.
@@ -152,73 +180,51 @@
                   (map mutate)
                   (concat offspring))))))
 
-
-
-(def status (atom nil))
-
-(defn post-status []
-  (http/post "http://amanas.ml/ce/resources/backend.php"
-             {:body (json/encode @status) ;;"{\"json\": \"input\"}"
-              :content-type :json
-              :accept :json}))
-
-(defn reset-status [config]
-  (reset! status {:config config
-                  :status [["Generation" "Fitness"]]}))
-
-(defn report-status [best generation fitness]
-  (swap! status update-in [:status] conj [generation fitness])
-  (swap! status assoc-in [:best] best)
-  (when (= 0 (mod generation 5)) (post-status)))
-
-
-
+;; Inicializa las variables de este namespace con los valores propios de
+;; cada experimento que viene en config.
+;; - config: un mapa con la configuración del experimento.
+(defn set-config [config]
+  (reset! pack-size (:pack-size config))
+  (reset! objects (arrange-objects (:objects config)))
+  (reset! rand-gen-prob (:rand-gen-prob config))
+  (reset! population-size (:population-size config))
+  (reset! first-stochastic-prob (:first-stochastic-prob config))
+  (reset! tournament-round-size (:tournament-round-size config))
+  (reset! replacement (:replacement config))
+  (reset! crossover-prob (:crossover-prob config))
+  (reset! generations-threshold (:generations-threshold config))
+  (reset! fitness-threshold (:fitness-threshold config))
+  (reset! blockage-delta (:blockage-delta config))
+  (reset! report-delta (:report-delta config)))
 
 ;; Inicializa y lleva a cabo la evolución.
-(defn go-live []
-  (reset-status :config)
+;; - config: mapa con la configuración del experimento
+(defn go-live [config]
+  (set-config config)
   (loop [generation 0
-         [best-parent & more :as sorted-population] (->> (rand-population)
-                                                         (sort-by fitness)
-                                                         reverse)]
-    (report-status best-parent generation  (/ (fitness best-parent) @pack-size))
+         [best-parent & more :as parents] (->> (rand-population) (sort-by fitness) reverse)]
+    (report-status config generation best-parent (rel-fitness best-parent) "running")
     (if (done? generation best-parent)
-      (do (prn (str "Evolution done in " generation " generations"))
-          (prn (str "Best individual found: " (vec best-parent)))
-          (prn (str "Fitness of best individual: " (fitness best-parent)))
-          (prn (str "Relative fitness reached: " (/ (fitness best-parent) @pack-size)))
-          best-parent)
-      (let [[best-child & more :as sorted-offspring] (->> (build-offspring sorted-population)
-                                                          (sort-by fitness)
-                                                          reverse)
+      (do (report-status config generation best-parent (rel-fitness best-parent) (done-reason generation best-parent))
+        best-parent)
+      (let [[best-child & more :as offspring] (->> parents build-offspring (sort-by fitness) reverse)
             elitism? (< (fitness best-child) (fitness best-parent))
-            sorted-elitism-offspring (if elitism?
-                                       (butlast (concat [best-parent] sorted-offspring))
-                                       sorted-offspring)]
-        (recur (inc generation) sorted-elitism-offspring)))))
+            elitism-offspring (if elitism?
+                                (butlast (concat [best-parent] offspring))
+                                offspring)]
+        (recur (inc generation) elitism-offspring)))))
 
 
-
-
-
-(defn rand-object [i]
-  {:nam (str "objeto " i) :val (rand-int 300) :vol (inc (rand-int 20))})
-
-
-
-(reset! pack-size 55555)
-(reset! rand-gen-prob 0.6)
-(reset! population-size 100)
-(reset! first-stochastic-prob 0.8)
-(reset! tournament-round-size 10)
-(reset! replacement true)
-(reset! crossover-prob 0.8)
-(reset! generations-threshold 50)
-(reset! fitness-threshold 100/100)
-(reset! objects (arrange-objects (map rand-object (range 200))))
-
-
-
-
-;; (go-live)
+(go-live {:pack-size 100
+          :rand-gen-prob 1/2
+          :population-size 10
+          :first-stochastic-prob 8/10
+          :tournament-round-size 5
+          :replacement true
+          :crossover-prob 8/10
+          :generations-threshold 200
+          :fitness-threshold 98/100
+          :blockage-delta 10
+          :report-delta 1
+          :objects (map (fn [i] {:nam i :val (rand-int 10) :vol (inc (rand-int 5))}) (range 5)) })
 
