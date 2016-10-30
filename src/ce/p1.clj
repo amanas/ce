@@ -157,7 +157,7 @@
 (def status (atom nil))
 
 (defn post-status []
-  (http/post "http://amanas.ml/ce/p1/backend.php"
+  (http/post "http://amanas.ml/ce/resources/backend.php"
              {:body (json/encode @status) ;;"{\"json\": \"input\"}"
               :content-type :json
               :accept :json}))
