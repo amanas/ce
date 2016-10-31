@@ -37,8 +37,8 @@
 (def report-delta (atom 5))
 
 ;; Inicialmente, cada objeto lo represento por un mapa con claves
-;; val (valor) y vol (volumen).
-;;  ej. {:val 1 :vol 3}
+;; nam (nombre), val (valor) y vol (volumen).
+;;  ej. {:nam "nombre" :val 1 :vol 3}
 ;; Necesitamos una función que genere una estructura con los objetos iniciales
 ;; del problema optimizada para accesos y para economía de computación.
 ;; Para ello:
@@ -72,10 +72,18 @@
 ;;  - individual: el individuo
 (defn fitness [individual]
   (->> individual
-       (map-indexed (fn [i v] (if v (:val (get @objects i)) 0)))
+       (map-indexed (fn [i v] (if v (:vol (get @objects i)) 0)))
        (reductions +)
        (filter #(<= % @pack-size))
        last))
+
+
+;; Devuelve la representación de un individuo como el conjunto de objetos
+;; que introduce en la mochila.
+(defn decode [individual]
+  (let [objects (remove nil? (map-indexed (fn [i v] (when v (get @objects i))) individual))
+        reds (reductions + (map :vol objects))]
+    (take (count (take-while (partial > @pack-size) reds)) objects)))
 
 ;; Calcula el fitness relativo de un individuo (el porcentaje de mochila que rellena)
 ;; - individual: el individuo
@@ -148,7 +156,7 @@
 (defn enough-blockage? [generation best]
   (swap! best-history (fn [h] (if (zero? generation) [] (take @blockage-delta (concat [best] h)))))
   (when (< @blockage-delta generation)
-       (<= (->> @best-history butlast (map rel-fitness) (apply max)) (rel-fitness (last @best-history)))))
+    (<= (->> @best-history butlast (map rel-fitness) (apply max)) (rel-fitness (last @best-history)))))
 
 ;; Determina si la evolución ha llegado a su fin, bien por haberse alcanzado
 ;; demasiadas generaciones, bien por haberse alcanzado un individuo con
@@ -197,15 +205,29 @@
   (reset! blockage-delta (:blockage-delta config))
   (reset! report-delta (:report-delta config)))
 
-;; Inicializa y lleva a cabo la evolución.
-;; - config: mapa con la configuración del experimento
+;; Inicializa y lleva a cabo la evolución. Reporta el resultado.
+;; Devuelve el mejor individuo encontrado.
+;; - config: mapa con la configuración del experimento. Adopta esta forma:
+;; {:pack-size 755
+;;  :objects objects
+;;  :population-size 50
+;;  :tournament-round-size 5
+;;  :replacement true
+;;  :rand-gen-prob 5/10
+;;  :first-stochastic-prob 8/10
+;;  :crossover-prob 5/10
+;;  :generations-threshold 200
+;;  :fitness-threshold 1
+;;  :blockage-delta 20
+;;  :report-delta 1}
 (defn go-live [config]
   (set-config config)
   (loop [generation 0
          [best-parent & more :as parents] (->> (rand-population) (sort-by fitness) reverse)]
-    (report-status config generation best-parent (rel-fitness best-parent) "running")
+    (report-status config generation best-parent (rel-fitness best-parent) "running" nil)
     (if (done? generation best-parent)
-      (do (report-status config generation best-parent (rel-fitness best-parent) (done-reason generation best-parent))
+      (do (report-status config generation best-parent (rel-fitness best-parent)
+                         (done-reason generation best-parent) (decode best-parent))
         best-parent)
       (let [[best-child & more :as offspring] (->> parents build-offspring (sort-by fitness) reverse)
             elitism? (< (fitness best-child) (fitness best-parent))
