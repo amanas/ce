@@ -13,7 +13,7 @@
 ;; del estado del experimento en tiempo real.
 ;; Ábrase http://amanas.ml/ce/resources/dashboard.html en un navegador web.
 (defn- post-status []
-  (http/post "http://amanas.ml/ce/resources/backend.php"
+  (http/post "http://amanas.ml/ce/service.php"
              {:body (json/encode @status)
               :content-type :json
               :accept :json}))
