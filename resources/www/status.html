@@ -23,7 +23,7 @@
 
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
+      google.charts.setOnLoadCallback(loop);
  
          var options = {
               title: 'Learning performance',
@@ -38,26 +38,45 @@
               }
           };
         
-        function drawChart() {
+        var experiment = ''; 
+        
+        function loadExperiments() {
             $.ajax({
                 type: "GET",
-                url: "service.php",
+                url: "service.php?action=list",
+                dataType: "json"
+            }).success(function(data){   
+                var $el = $("#combobox"); 
+                $el.empty();
+                $el.append($('<option value="" disabled selected style="display:none;">Choose experiment...</option>'));
+                $.each(data, function(k,v) {
+                    $el.append($("<option></option>").attr("value", v).text(v));
+                });
+                $("#combobox").val(experiment);
+            });
+        }
+        
+        
+        function drawChart() {
+            console.log(experiment);
+            $.ajax({
+                type: "GET",
+                url: "service.php?action=get&name=" + experiment,
                 dataType: "json"
             }).success(function(data){   
                  try {                    
-                    $('#best').html(data.best.map(function(obj, index) { 
-                        console.log(index)
+                    $('#best-graph').html(data.best.map(function(obj, index) { 
                         if (obj == true) 
                             return '<div style="background-color: yellowgreen; color: gray; display: inline-block">1</div>';
                         else 
                             return '<div style="background-color: LightSeaGreen; color: gray; display: inline-block">0</div>';
                     }));
                     $('#config').html(JSON.stringify(data.config, null, 2));
-                    $('#result').html('Status: ' + data.result + 
+                    $('#status').html('Status: ' + data.result + 
                                       '\nGeneration: ' + data.generation + 
                                       '\nTime elapsed: ' + (data['current-time'] - data['start-time'])/1000 + ' seconds'+ 
                                       '\nBest individual relative fitness: ' + data['best-rel-fitness']);                    
-                    $('#decoded').html(JSON.stringify(data['best-decoded'], null, 2));                   
+                    $('#best-decoded').html(JSON.stringify(data['best-decoded'], null, 2));                   
                 } catch (e) {
                     console.log(e);
                 } 
@@ -70,9 +89,17 @@
                     console.log(e);
                 } 
                 
-                setTimeout(drawChart, 500);
+                
             });
       }
+        
+        
+        function loop() {
+            loadExperiments();
+            drawChart();
+            setTimeout(loop, 500);
+        }
+        
     </script> 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -86,28 +113,41 @@
       
       
       <div class="container">
+          
+         
+          
        <div class="row text-center">
            <h1>Computación evolutiva - UNED - Andrés Mañas</h1>  <p>&nbsp;</p> 
        </div>
        <div class="row">
+          <div class="row text-center">
+              <form class="form-inline">
+              <div class="form-group">
+                  <label for="combobox">Select experiment:</label>
+                  <select class="form-control" id="combobox" onchange="experiment = this.value">
+                  </select>
+              </div> 
+              </form> 
+          </div>
           <div class="col-md-12">
               <div id="curve_chart" ></div>   
           </div>
-          <div class="col-md-12">   
+          <div class="col-md-6">   
               <p>Current best individual<p>
-              <div id="best"></div>
+              <div id="best-graph"></div>
               <br/>
-           </div>
-           
+          </div>           
           <div class="col-md-6">              
-              <p>Status<p>
-              <pre id="result"></pre>              
-              <p>Best individual decoded<p>
-              <pre id="decoded"></pre>
-           </div>
-          <div class="col-md-6">              
+              <p>Status<p>   
+              <pre id="status"></pre>
+          </div>           
+          <div class="col-md-6">                    
               <p>Config<p>
               <pre id="config"></pre>
+           </div>
+          <div class="col-md-6">           
+              <p>Best individual found<p>
+              <pre id="best-decoded"></pre>
            </div>
           </div>
        </div>

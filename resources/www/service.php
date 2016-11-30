@@ -1,9 +1,20 @@
 <?php 
     
-if (!empty(file_get_contents('php://input'))) {
-    apc_store('status', file_get_contents('php://input'));
-} else {
-    echo apc_fetch('status');
+if ($_GET["action"] == "post") {
+    apc_store($_GET["name"], file_get_contents('php://input'));
 }
-    
+
+if ($_GET["action"] == "list") {
+    $result = array();
+    $iter = new APCIterator('user');
+    foreach ($iter as $item) {
+        array_push($result, $item['key']);
+    }
+    echo json_encode($result);
+}
+
+if ($_GET["action"] == "get") {
+    echo apc_fetch($_GET["name"]);
+}
+
 ?>
