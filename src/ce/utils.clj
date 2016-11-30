@@ -12,8 +12,8 @@
 ;; Envía el estado a un web service en la nube para permitir la visualización
 ;; del estado del experimento en tiempo real.
 ;; Ábrase http://amanas.ml/ce/resources/dashboard.html en un navegador web.
-(defn- post-status []
-  (http/post "http://amanas.ml/ce/service.php"
+(defn- post-status [name]
+  (http/post (format "http://amanas.ml/ce/service.php?action=post&name=%s" name)
              {:body (json/encode @status)
               :content-type :json
               :accept :json}))
@@ -36,7 +36,4 @@
                           {:status (conj (:status @status) [generation rel-fitness])
                            :start-time (:start-time @status)})))
   (when (zero? (mod generation (:report-delta config)))
-    (post-status)))
-
-
-
+    (post-status (:name config))))

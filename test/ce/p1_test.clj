@@ -21,7 +21,7 @@
 ;; Plantilla para experimentos con datos autogenerados
 (comment
   (->> {:pack-size 755
-        :objects (map #(rand-object % 20 20) (range 200))
+        :objects (map #(rand-object % 10 10) (range 200))
         :population-size 50
         :tournament-round-size 5
         :replacement true
@@ -31,7 +31,8 @@
         :generations-threshold 200
         :fitness-threshold 1
         :blockage-delta 20
-        :report-delta 1}
+        :report-delta 1
+        :name "Experiment 1"}
        go-live
        decode))
 
@@ -50,7 +51,7 @@
           :generations-threshold 200
           :fitness-threshold 1
           :blockage-delta 10
-          :report-delta 1}
+          :report-delta 1
+          :name "Rosseta Code"}
          go-live
          decode)))
-
