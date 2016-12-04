@@ -219,7 +219,8 @@
 ;;  :generations-threshold 200
 ;;  :fitness-threshold 1
 ;;  :blockage-delta 20
-;;  :report-delta 1}
+;;  :report-delta 1
+;;  :name "Nombre del experimento"}
 (defn go-live [config]
   (set-config config)
   (loop [generation 0
