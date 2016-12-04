@@ -76,10 +76,12 @@
                                       '\nGeneration: ' + data.generation + 
                                       '\nTime elapsed: ' + (data['current-time'] - data['start-time'])/1000 + ' seconds'+ 
                                       '\nBest individual relative fitness: ' + data['best-rel-fitness']);                    
-                    $('#best-decoded').html(JSON.stringify(data['best-decoded'], null, 2));                   
-                } catch (e) {
-                    console.log(e);
-                } 
+                    $('#best-decoded').html(JSON.stringify(data['best-decoded'].map(function(obj){ 
+                        return [obj.nam,obj.val,obj.vol,obj.ratio].toString();
+                    }), null, 2));                   
+                 } catch (e) {
+                     alert(e);
+                 } 
                 
                 try {                    
                     var data = new google.visualization.arrayToDataTable(data.status);                
@@ -146,7 +148,7 @@
               <pre id="config"></pre>
            </div>
           <div class="col-md-6">           
-              <p>Best individual found<p>
+              <p>Best individual found [[nombre,valor,volumen,ratio],...]<p>
               <pre id="best-decoded"></pre>
            </div>
           </div>
