@@ -6,7 +6,6 @@
  :first-stochastic-prob 8/10
  :crossover-prob 5/10
  :generations-threshold 200
- :fitness-threshold 1
  :blockage-delta 20
  :report-delta 1
  :name "amanas: Rosseta Code desde fichero"

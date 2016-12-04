@@ -86,7 +86,7 @@
 (defn decode [individual]
   (let [objects (remove nil? (map-indexed (fn [i v] (when v (get @objects i))) individual))
         reds (reductions + (map :vol objects))]
-    (take (count (take-while (partial > @pack-size) reds)) objects)))
+    (take (count (take-while (partial >= @pack-size) reds)) objects)))
 
 ;; Genera aleatoriamente un individuo.
 (defn rand-individual []
