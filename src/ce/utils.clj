@@ -31,7 +31,7 @@
                          :current-time (now)
                          :best-rel-fitness rel-fitness}
                         (if (zero? generation)
-                          {:status [["Generation" "Relative fitness"]]
+                          {:status [["Generation" "Fitness"]]
                            :start-time (now)}
                           {:status (conj (:status @status) [generation rel-fitness])
                            :start-time (:start-time @status)})))

@@ -14,22 +14,22 @@
 
 ;; Plantilla para experimentos con objetos autogenerados
 ;; y configuración ad-hoc
-(comment
-  (->> {:pack-size 755
-        :objects (map #(rand-object % 10 10) (range 200))
-        :population-size 50
-        :tournament-round-size 5
-        :replacement true
-        :rand-gen-prob 5/10
-        :first-stochastic-prob 8/10
-        :crossover-prob 5/10
-        :generations-threshold 200
-        :fitness-threshold 1
-        :blockage-delta 20
-        :report-delta 1
-        :name "amanas: Autogenerado 1"}
-       go-live
-       decode))
+(comment)
+(->> {:name "amanas: Autogenerado 5.4"
+      :pack-size 755
+      :objects (map #(rand-object % 100 100) (range 20))
+      :population-size 100
+      :tournament-round-size 20
+      :replacement true
+      :rand-gen-prob 5/10
+      :first-stochastic-prob 8/10
+      :crossover-prob 5/10
+      :generations-threshold 200
+      :blockage-delta 5
+      :report-delta 1}
+     go-live
+     decode)
+
 
 (comment (go-live-from-file "resources/data/rossetacode.scm"))
 

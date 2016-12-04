@@ -29,8 +29,6 @@
 (def crossover-prob (atom 0.6))
 ;; Número de generaciones tope para el experimento
 (def generations-threshold (atom 100))
-;; Umbral de calidad que, una vez alcanzado, da por finalizado el experimento
-(def fitness-threshold (atom 95/100))
 ;; Número de generaciones sin mejora del delta que se permiten antes de dar por acabado el exp.
 (def blockage-delta (atom 10))
 ;; Cada cuantas generaciones se reporta el estado al web-service en la nube para su visualización.
@@ -67,16 +65,21 @@
 ;;  - se queda con los objetos que tiene en la mochila (gen true)
 ;;    ordenados por ratio descendente
 ;;  - acumula los valores de los objetos, mientras quepan en la mochila
-;;  - devuelve el acumulado
+;;  - devuelve el valor acumulado
 ;; Parámetros:
 ;;  - individual: el individuo
 (defn fitness [individual]
   (->> individual
-       (map-indexed (fn [i v] (if v (:vol (get @objects i)) 0)))
-       (reductions +)
-       (filter #(<= % @pack-size))
-       last))
-
+       (interleave (range (count individual)))
+       (partition 2)
+       (pmap (fn [[i v]] (if v (get @objects i))))
+       (remove nil?)
+       (reductions (fn [[acum-val acum-vol] o]
+                     [(+ acum-val (:val o)) (+ acum-vol (:vol o))])
+                   [0 0])
+       (filter #(<= (last %) @pack-size))
+       last
+       first))
 
 ;; Devuelve la representación de un individuo como el conjunto de objetos
 ;; que introduce en la mochila.
@@ -84,11 +87,6 @@
   (let [objects (remove nil? (map-indexed (fn [i v] (when v (get @objects i))) individual))
         reds (reductions + (map :vol objects))]
     (take (count (take-while (partial > @pack-size) reds)) objects)))
-
-;; Calcula el fitness relativo de un individuo (el porcentaje de mochila que rellena)
-;; - individual: el individuo
-(defn rel-fitness [individual]
-  (/ (fitness individual) @pack-size))
 
 ;; Genera aleatoriamente un individuo.
 (defn rand-individual []
@@ -136,11 +134,6 @@
   (let [p (/ 1 (count individual))]
     (map (fn [o] (if (<= (rand) p) (not o) o)) individual)))
 
-;; Determina si la evolución de un individuo es superior al umbral del problema.
-;;  - individual: el individuo
-(defn enough-fitness? [individual]
-  (<= @fitness-threshold (/ (fitness individual) @pack-size)))
-
 ;; Determina si se ha alcanzado el máxido de generaciones del problema.
 ;;  - generation: la generación en curso
 (defn enough-generations? [generation]
@@ -154,26 +147,24 @@
 ;;  - generation: la generación en curso
 ;;  - best: el mejor individuo de la generación
 (defn enough-blockage? [generation best]
-  (swap! best-history (fn [h] (if (zero? generation) [] (take @blockage-delta (concat [best] h)))))
-  (when (< @blockage-delta generation)
-    (<= (->> @best-history butlast (map rel-fitness) (apply max)) (rel-fitness (last @best-history)))))
+  (swap! best-history (fn [h] (take @blockage-delta (concat [best] h))))
+  (and (< @blockage-delta generation)
+       (<= (apply max (map fitness (butlast @best-history)))
+           (fitness (last @best-history)))))
 
 ;; Determina si la evolución ha llegado a su fin, bien por haberse alcanzado
-;; demasiadas generaciones, bien por haberse alcanzado un individuo con
-;; fitness suficiente, bien por llevar demasiadas generaciones sin que se
+;; demasiadas generaciones, bien por llevar demasiadas generaciones sin que se
 ;; incremente el fitness.
 ;;  - generation: la generación en curso
 ;;  - best: el mejor individuo de la generación
 (defn done? [generation best]
   (or (enough-generations? generation)
-      (enough-fitness? best)
       (enough-blockage? generation best)))
 
 ;; Devuelve la razón por la que el algoritmo acaba, para poderla reportar.
 (defn done-reason [generation best]
   (cond
     (enough-generations? generation) "Done! Enough generations lived"
-    (enough-fitness? best) "Done! Enough fitness reached"
     (enough-blockage? generation best) "Done! Too many generations without improving fitness"
     :else "Should never happen"))
 
@@ -201,7 +192,6 @@
   (reset! replacement (:replacement config))
   (reset! crossover-prob (:crossover-prob config))
   (reset! generations-threshold (:generations-threshold config))
-  (reset! fitness-threshold (:fitness-threshold config))
   (reset! blockage-delta (:blockage-delta config))
   (reset! report-delta (:report-delta config)))
 
@@ -217,7 +207,6 @@
 ;;  :first-stochastic-prob 8/10
 ;;  :crossover-prob 5/10
 ;;  :generations-threshold 200
-;;  :fitness-threshold 1
 ;;  :blockage-delta 20
 ;;  :report-delta 1
 ;;  :name "Nombre del experimento"}
@@ -225,9 +214,9 @@
   (set-config config)
   (loop [generation 0
          [best-parent & more :as parents] (->> (rand-population) (sort-by fitness) reverse)]
-    (report-status config generation best-parent (rel-fitness best-parent) "running" nil)
+    (report-status config generation best-parent (fitness best-parent) "running" (decode best-parent))
     (if (done? generation best-parent)
-      (do (report-status config generation best-parent (rel-fitness best-parent)
+      (do (report-status config generation best-parent (fitness best-parent)
                          (done-reason generation best-parent) (decode best-parent))
         best-parent)
       (let [[best-child & more :as offspring] (->> parents build-offspring (sort-by fitness) reverse)
@@ -258,7 +247,6 @@
 ;;  :first-stochastic-prob 1/10
 ;;  :crossover-prob 1/10
 ;;  :generations-threshold 200
-;;  :fitness-threshold 1
 ;;  :blockage-delta 10
 ;;  :report-delta 1
 ;;  :name "amanas: Todo desde fichero 1"
