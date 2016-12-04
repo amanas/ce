@@ -16,9 +16,12 @@
 ;; - max-val: valor máximo
 ;; - max-vol: volument máximo
 (defn rand-object [i max-val max-vol]
-  (new-object (str "object " i) (rand-int max-val) (inc (rand-int (dec max-vol)))))
+  (new-object (str "object " i)
+              (rand-int max-val)
+              (inc (rand-int (dec max-vol)))))
 
-;; Plantilla para experimentos con datos autogenerados
+;; Plantilla para experimentos con objetos autogenerados
+;; y configuración ad-hoc
 (comment
   (->> {:pack-size 755
         :objects (map #(rand-object % 10 10) (range 200))
@@ -32,26 +35,29 @@
         :fitness-threshold 1
         :blockage-delta 20
         :report-delta 1
-        :name "Experiment 1"}
+        :name "amanas: Autogenerado 1"}
        go-live
        decode))
 
-;; Plantilla para experimentos con los datos obtenidos de
-;; https://www.rosettacode.org/wiki/Knapsack_problem/0-1
-(comment
-  (let [data (read-string (slurp "resources/rossetacode.scm"))]
-    (->> {:pack-size (:pack-size data)
-          :objects (map new-object (:objects data))
-          :population-size 2
-          :tournament-round-size 2
-          :replacement true
-          :rand-gen-prob 1/10
-          :first-stochastic-prob 1/10
-          :crossover-prob 1/10
-          :generations-threshold 200
-          :fitness-threshold 1
-          :blockage-delta 10
-          :report-delta 1
-          :name "Rosseta Code"}
-         go-live
-         decode)))
+;; Plantilla para experimentos con objetos y configuración desde fichero
+;; El ficero tiene que tener un formato como el siguiente:
+;; {:pack-size 1234
+;;  :population-size 2
+;;  :tournament-round-size 2
+;;  :replacement true
+;;  :rand-gen-prob 1/10
+;;  :first-stochastic-prob 1/10
+;;  :crossover-prob 1/10
+;;  :generations-threshold 200
+;;  :fitness-threshold 1
+;;  :blockage-delta 10
+;;  :report-delta 1
+;;  :name "amanas: Todo desde fichero 1"
+;;  :objects [["objeto 1" 150 9]
+;;            ["objeto 2" 120 8]
+;;            ...]}
+(comment)
+(let [data (read-string (slurp "resources/data/rossetacode.scm"))
+      data (assoc data :objects (map new-object (:objects data)))]
+  (decode (go-live data)))
+

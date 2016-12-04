@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Andrés Mañas - computación evolutiva</title>
-      
+
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -24,7 +24,7 @@
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(loop);
- 
+
          var options = {
               title: 'Learning performance',
               curveType: 'function',
@@ -37,16 +37,16 @@
                   title: 'Generation'
               }
           };
-        
-        var experiment = ''; 
-        
+
+        var experiment = '';
+
         function loadExperiments() {
             $.ajax({
                 type: "GET",
                 url: "service.php?action=list",
                 dataType: "json"
-            }).success(function(data){   
-                var $el = $("#combobox"); 
+            }).success(function(data){
+                var $el = $("#combobox");
                 $el.empty();
                 $el.append($('<option value="" disabled selected style="display:none;">Choose experiment...</option>'));
                 $.each(data, function(k,v) {
@@ -55,54 +55,54 @@
                 $("#combobox").val(experiment);
             });
         }
-        
-        
+
+
         function drawChart() {
             console.log(experiment);
             $.ajax({
                 type: "GET",
                 url: "service.php?action=get&name=" + experiment,
                 dataType: "json"
-            }).success(function(data){   
-                 try {                    
-                    $('#best-graph').html(data.best.map(function(obj, index) { 
-                        if (obj == true) 
+            }).success(function(data){
+                 try {
+                    $('#best-graph').html(data.best.map(function(obj, index) {
+                        if (obj == true)
                             return '<div style="background-color: yellowgreen; color: gray; display: inline-block">1</div>';
-                        else 
+                        else
                             return '<div style="background-color: LightSeaGreen; color: gray; display: inline-block">0</div>';
                     }));
                     $('#config').html(JSON.stringify(data.config, null, 2));
-                    $('#status').html('Status: ' + data.result + 
-                                      '\nGeneration: ' + data.generation + 
-                                      '\nTime elapsed: ' + (data['current-time'] - data['start-time'])/1000 + ' seconds'+ 
-                                      '\nBest individual relative fitness: ' + data['best-rel-fitness']);                    
-                    $('#best-decoded').html(JSON.stringify(data['best-decoded'].map(function(obj){ 
+                    $('#status').html('Status: ' + data.result +
+                                      '\nGeneration: ' + data.generation +
+                                      '\nTime elapsed: ' + (data['current-time'] - data['start-time'])/1000 + ' seconds'+
+                                      '\nBest individual relative fitness: ' + data['best-rel-fitness']);
+                    $('#best-decoded').html(JSON.stringify(data['best-decoded'].map(function(obj){
                         return [obj.nam,obj.val,obj.vol,obj.ratio].toString();
-                    }), null, 2));                   
+                    }), null, 2));
                  } catch (e) {
-                     alert(e);
-                 } 
-                
-                try {                    
-                    var data = new google.visualization.arrayToDataTable(data.status);                
-                    var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));                
-                    chart.draw(data, options);           
+                     console.log(e);
+                 }
+
+                try {
+                    var data = new google.visualization.arrayToDataTable(data.status);
+                    var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+                    chart.draw(data, options);
                 } catch (e) {
                     console.log(e);
-                } 
-                
-                
+                }
+
+
             });
       }
-        
-        
+
+
         function loop() {
             loadExperiments();
             drawChart();
             setTimeout(loop, 500);
         }
-        
-    </script> 
+
+    </script>
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -111,15 +111,15 @@
     <![endif]-->
   </head>
   <body>
-      
-      
-      
+
+
+
       <div class="container">
-          
-         
-          
+
+
+
        <div class="row text-center">
-           <h1>Computación evolutiva - UNED - Andrés Mañas</h1>  <p>&nbsp;</p> 
+           <h1>Computación evolutiva - UNED - Andrés Mañas</h1>  <p>&nbsp;</p>
        </div>
        <div class="row">
           <div class="row text-center">
@@ -128,26 +128,26 @@
                   <label for="combobox">Select experiment:</label>
                   <select class="form-control" id="combobox" onchange="experiment = this.value">
                   </select>
-              </div> 
-              </form> 
+              </div>
+              </form>
           </div>
           <div class="col-md-12">
-              <div id="curve_chart" ></div>   
+              <div id="curve_chart" ></div>
           </div>
-          <div class="col-md-6">   
+          <div class="col-md-6">
               <p>Current best individual<p>
               <div id="best-graph"></div>
               <br/>
-          </div>           
-          <div class="col-md-6">              
-              <p>Status<p>   
+          </div>
+          <div class="col-md-6">
+              <p>Status<p>
               <pre id="status"></pre>
-          </div>           
-          <div class="col-md-6">                    
+          </div>
+          <div class="col-md-6">
               <p>Config<p>
               <pre id="config"></pre>
            </div>
-          <div class="col-md-6">           
+          <div class="col-md-6">
               <p>Best individual found [[nombre,valor,volumen,ratio],...]<p>
               <pre id="best-decoded"></pre>
            </div>
