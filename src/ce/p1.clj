@@ -237,3 +237,35 @@
                                 offspring)]
         (recur (inc generation) elitism-offspring)))))
 
+
+;; Genera un objeto interpretable por mi algoritmo a partir de sus propiedades.
+;; - nam: nombre del objeto
+;; - val: valor del objeto
+;; - vol: volumen del objeto
+(defn new-object
+  ([[nam val vol]] (new-object nam val vol))
+  ([nam val vol] {:nam nam :val val :vol vol}))
+
+;; Inicializa y lleva a cabo la evolución. Reporta el resultado.
+;; Devuelve el mejor individuo encontrado.
+;; - path: ruta al fichero con objetos y configuración a utilizar
+;; El ficero tiene que tener un formato como el siguiente:
+;; {:pack-size 1234
+;;  :population-size 2
+;;  :tournament-round-size 2
+;;  :replacement true
+;;  :rand-gen-prob 1/10
+;;  :first-stochastic-prob 1/10
+;;  :crossover-prob 1/10
+;;  :generations-threshold 200
+;;  :fitness-threshold 1
+;;  :blockage-delta 10
+;;  :report-delta 1
+;;  :name "amanas: Todo desde fichero 1"
+;;  :objects [["objeto 1" 150 9]
+;;            ["objeto 2" 120 8]
+;;            ...]}
+(defn go-live-from-file [path]
+  (let [data (read-string (slurp path))
+        data (assoc data :objects (map new-object (:objects data)))]
+    (decode (go-live data))))
