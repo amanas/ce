@@ -31,7 +31,7 @@
               interpolateNulls: true,
               legend: { position: 'right' },
               vAxis:{
-                  title: 'Relative fitness (best fitness / pack size)'
+                  title: 'Best individual fitness'
               },
               hAxis:{
                   title: 'Generation'
@@ -75,7 +75,7 @@
                     $('#status').html('Status: ' + data.result +
                                       '\nGeneration: ' + data.generation +
                                       '\nTime elapsed: ' + (data['current-time'] - data['start-time'])/1000 + ' seconds'+
-                                      '\nBest individual relative fitness: ' + data['best-rel-fitness']);
+                                      '\nBest individual fitness: ' + data['best-rel-fitness']);
                     $('#best-decoded').html(JSON.stringify(data['best-decoded'].map(function(obj){
                         return [obj.nam,obj.val,obj.vol,obj.ratio].toString();
                     }), null, 2));
@@ -148,7 +148,7 @@
               <pre id="config"></pre>
            </div>
           <div class="col-md-6">
-              <p>Best individual found [[nombre,valor,volumen,ratio],...]<p>
+              <p>Best individual found ["nombre,valor,volumen,ratio",...]<p>
               <pre id="best-decoded"></pre>
            </div>
           </div>
