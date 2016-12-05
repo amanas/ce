@@ -1,7 +1,9 @@
 <?php 
     
+# apc_delete ("Rosseta Code"); 
+
 if ($_GET["action"] == "post") {
-    apc_store($_GET["name"], file_get_contents('php://input'));
+    apc_store($_GET["name"], file_get_contents('php://input'), 0);
 }
 
 if ($_GET["action"] == "list") {
