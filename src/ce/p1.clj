@@ -10,29 +10,46 @@
 ;; Y los inicializo con valores por defecto.
 ;; Para cada experimentación del algortimo actualizaremos sus
 ;; valores convenientemente
+(def default-config
+  {;; El tamaño de la mochila
+    :pack-size 10
+    ;; Probabilidad de activación de los genes cuando se genera un individuo
+    :rand-gen-prob 1/2
+    ;; Tamaño inicial de la población
+    :population-size 10
+    ;; Probabilidad utilizada para selección estocástica
+    :stochastic-prob 3/4
+    ;; Número de individuos seleccionados por ronda en selección por torneo
+    :tournament-size 5
+    ;; Torneo con o sin reemplazamiento
+    :replacement true
+    ;; Pobabilidad de mezcla en crossover
+    :crossover-prob 3/4
+    ;; Número de generaciones tope para el experimento
+    :max-generations 100
+    ;; Número de generaciones sin mejora del fitness que se permiten antes de dar por acabado el exp.
+    :idle-generations 5
+    ;; Cada cuantas generaciones se reporta el estado al web-service en la nube para su visualización.
+    :report-delta 1})
 
-;; El tamaño de la mochila
-(def pack-size (atom 10))
-;; Los objetos - los inicializaré después de definir la función arrange-objects
-(def objects (atom []))
-;; Probabilidad de activación de los genes cuando se genera un individuo
-(def rand-gen-prob (atom 0.6))
-;; Tamaño inicial de la población
-(def population-size (atom 10))
-;; Probabilidad utilizada para selección estocástica
-(def stochastic-prob (atom 0.8))
-;; Número de individuos seleccionados por ronda en selección por torneo
-(def tournament-size (atom 5))
-;; Torneo con o sin reemplazamiento
-(def replacement (atom true))
-;; Pobabilidad de mezcla en crossover
-(def crossover-prob (atom 0.6))
-;; Número de generaciones tope para el experimento
-(def max-generations (atom 100))
-;; Número de generaciones sin mejora del fitness que se permiten antes de dar por acabado el exp.
-(def idle-generations (atom 10))
-;; Cada cuantas generaciones se reporta el estado al web-service en la nube para su visualización.
-(def report-delta (atom 5))
+;; En esta variable almacenaremos la configuración propia de cada ejecución
+(def config (atom default-config))
+
+;; Genera un objeto a partir de sus propiedades.
+;; - nam: nombre del objeto
+;; - val: valor del objeto
+;; - vol: volumen del objeto
+(defn new-object
+  ([[nam val vol]] (new-object nam val vol))
+  ([nam val vol] {:nam nam :val val :vol vol}))
+
+;; Genera un objeto aleatoriamente con valor entre 1 y max-val y
+;; volumen entre 1 y max-vol.
+;; - i: número de objeto
+;; - max-val: valor máximo
+;; - max-vol: volument máximo
+(defn rand-object [i max-val max-vol]
+  (new-object (str "object " i) (inc (rand-int max-val)) (inc (rand-int max-vol))))
 
 ;; Inicialmente, cada objeto lo represento por un mapa con claves
 ;; nam (nombre), val (valor) y vol (volumen).
@@ -55,6 +72,12 @@
        (map-indexed (fn [i v] {i v}))
        (apply merge)))
 
+;; En esta variable almacenaremos los objetos que se quieren introducir en la mochila
+;; reordenados apropiadamente.
+;; La inicializo con valores aleatorios pero en cada ejecución sera actualizada con
+;; los objetos propios de cada experimento.
+(def objects (atom (arrange-objects (map #(rand-object % 100 100) (range 100)))))
+
 ;; Decido además representar cada individuo como un vector de genes binarios.
 ;; Por ejemplo, el individuo [true false true] representa meter en la mochila
 ;; el primer y tercer objetos (una vez reordenados con la función
@@ -75,7 +98,7 @@
        (reductions (fn [[acum-val acum-vol] o]
                      [(+ acum-val (:val o)) (+ acum-vol (:vol o))])
                    [0 0])
-       (filter #(<= (last %) @pack-size))
+       (filter #(<= (last %) (:pack-size @config) ))
        last
        first))
 
@@ -84,38 +107,22 @@
 (defn decode [individual]
   (let [objects (remove nil? (map-indexed (fn [i v] (when v (get @objects i))) individual))
         reds (reductions + (map :vol objects))]
-    (take (count (take-while (partial >= @pack-size) reds)) objects)))
-
-;; Genera un objeto a partir de sus propiedades.
-;; - nam: nombre del objeto
-;; - val: valor del objeto
-;; - vol: volumen del objeto
-(defn new-object
-  ([[nam val vol]] (new-object nam val vol))
-  ([nam val vol] {:nam nam :val val :vol vol}))
-
-;; Genera un objeto aleatoriamente con valor entre 0 y max-val y
-;; volumen entre 1 y max-vol.
-;; - i: número de objeto
-;; - max-val: valor máximo
-;; - max-vol: volument máximo
-(defn rand-object [i max-val max-vol]
-  (new-object (str "object " i) (rand-int max-val) (inc (rand-int (dec max-vol)))))
+    (take (count (take-while (partial >= (:pack-size @config)) reds)) objects)))
 
 ;; Genera aleatoriamente un individuo.
 (defn rand-individual []
-  (repeatedly (count @objects) (fn [] (<= (rand) @rand-gen-prob))))
+  (repeatedly (count @objects) (fn [] (<= (rand) (:rand-gen-prob @config)))))
 
 ;; Genera aleatoriamente una población.
 (defn rand-population []
-  (repeatedly @population-size (fn [] (rand-individual))))
+  (repeatedly (:population-size @config) (fn [] (rand-individual))))
 
 ;; Selecciona el primer elmento de una lista con probabilidad stochastic-prob.
 ;; De no ser seleccionado, selecciona el primero del resto con probabilidad
 ;;  stochastic-prob también. Y así hasta agotar la lista.
 (defn first-stochastic [col]
   (loop [[elem & more] col]
-    (if (or (empty? more) (<= (rand) @stochastic-prob)) elem
+    (if (or (empty? more) (<= (rand) (:stochastic-prob @config))) elem
       (recur more))))
 
 ;; Selecciona por torneo estocástico.
@@ -125,10 +132,10 @@
   (loop [population population
          selected []]
     (if (or (empty? population) (<= size (count selected))) selected
-      (let [individual (->> population shuffle (take @tournament-size)
+      (let [individual (->> population shuffle (take (:tournament-size @config))
                             (pmap (fn [ind] [(fitness ind) ind]))
                             (sort-by first) reverse (map second) first-stochastic)]
-        (recur (if @replacement (remove (partial = individual) population) population)
+        (recur (if (:replacement @config) (remove (partial = individual) population) population)
                (conj selected individual))))))
 
 ;; Cruza dos padres por un punto o devuelve los padres tal cual, dependiendo
@@ -136,7 +143,7 @@
 ;;  - parent1: primer padre
 ;;  - parent2: segundo padre
 (defn crossover-one-point [parent1 parent2]
-  (if (<= (rand) @crossover-prob)
+  (if (<= (rand) (:crossover-prob @config))
     (let [point (inc (rand-int (dec (count parent1))))]
       [(concat (take point parent1) (drop point parent2))
        (concat (take point parent2) (drop point parent1))])
@@ -151,19 +158,21 @@
 
 ;; Determina si se ha alcanzado el máxido de generaciones del problema.
 ;;  - generation: la generación en curso
-(defn enough-generations? [generation]
-  (<= @max-generations generation))
+(defn too-much-generations? [generation]
+  (<= (:max-generations @config) generation))
 
 ;; Variable donde almacenamos los mejores individuos de la historia reciente.
+;; Se utiliza para determinar si han pasado demasiadas generaciones sin
+;; que se incremente el fitness del mejor individuo.
 (def best-history (atom []))
 
 ;; Determina si se llevan demasiadas generaciones sin que aparezcan individuos
 ;; con fitness mejorado.
 ;;  - generation: la generación en curso
 ;;  - best: el mejor individuo de la generación
-(defn enough-blockage? [generation best]
-  (swap! best-history (fn [h] (take @idle-generations (concat [best] h))))
-  (and (< @idle-generations generation)
+(defn too-much-idle? [generation best]
+  (swap! best-history (fn [h] (take (:idle-generations @config) (concat [best] h))))
+  (and (< (:idle-generations @config) generation)
        (<= (apply max (map fitness (butlast @best-history)))
            (fitness (last @best-history)))))
 
@@ -173,14 +182,14 @@
 ;;  - generation: la generación en curso
 ;;  - best: el mejor individuo de la generación
 (defn done? [generation best]
-  (or (enough-generations? generation)
-      (enough-blockage? generation best)))
+  (or (too-much-generations? generation)
+      (too-much-idle? generation best)))
 
 ;; Devuelve la razón por la que el algoritmo acaba, para poderla reportar.
 (defn done-reason [generation best]
   (cond
-    (enough-generations? generation) "Done! Enough generations lived"
-    (enough-blockage? generation best) "Done! Too many generations without improving fitness"
+    (too-much-generations? generation) "Done! Enough generations lived"
+    (too-much-idle? generation best) "Done! Too many generations without improving fitness"
     :else "Should never happen"))
 
 ;; Construye la nueva generación a partir de la generación actual
@@ -194,27 +203,12 @@
                   (map mutate)
                   (concat offspring))))))
 
-;; Inicializa las variables de este namespace con los valores propios de
-;; cada experimento que viene en config.
-;; - config: un mapa con la configuración del experimento.
-(defn set-config [config]
-  (reset! pack-size (:pack-size config))
-  (reset! objects (arrange-objects (:objects config)))
-  (reset! rand-gen-prob (:rand-gen-prob config))
-  (reset! population-size (:population-size config))
-  (reset! stochastic-prob (:stochastic-prob config))
-  (reset! tournament-size (:tournament-size config))
-  (reset! replacement (:replacement config))
-  (reset! crossover-prob (:crossover-prob config))
-  (reset! max-generations (:max-generations config))
-  (reset! idle-generations (:idle-generations config))
-  (reset! report-delta (:report-delta config)))
-
 ;; Inicializa y lleva a cabo la evolución. Reporta el resultado.
 ;; Devuelve el mejor individuo encontrado.
-;; - config: mapa con la configuración del experimento. Adopta esta forma:
+;;  - objects: los objetos a introducir en la mochila.
+;;  - config: mapa con la configuración del experimento.
+;; La configuración adopta esta forma:
 ;; {:pack-size 755
-;;  :objects objects
 ;;  :population-size 50
 ;;  :tournament-size 5
 ;;  :replacement true
@@ -225,13 +219,19 @@
 ;;  :idle-generations 20
 ;;  :report-delta 1
 ;;  :name "Nombre del experimento"}
-(defn go-live [config]
-  (set-config config)
+;; Los objetos son un array con esta forma:
+;; [["nombre 1" valor-1 volumen-1]
+;;  ["nombre 2" valor-2 volumen-2]
+;;  ...
+;; ]
+(defn go-live [conf objs]
+  (!reset config conf)
+  (!reset objects (arrange-objects objs))
   (loop [generation 0
          [best-parent & more :as parents] (->> (rand-population) (sort-by fitness) reverse)]
-    (report-status config generation best-parent (fitness best-parent) "running" (decode best-parent))
+    (report-status @config generation best-parent (fitness best-parent) "running" (decode best-parent))
     (if (done? generation best-parent)
-      (do (report-status config generation best-parent (fitness best-parent)
+      (do (report-status @config generation best-parent (fitness best-parent)
                          (done-reason generation best-parent) (decode best-parent))
         best-parent)
       (let [[best-child & more :as offspring] (->> parents build-offspring (sort-by fitness) reverse)
@@ -246,21 +246,22 @@
 ;; Devuelve el mejor individuo encontrado.
 ;; - path: ruta al fichero con objetos y configuración a utilizar
 ;; El ficero tiene que tener un formato como el siguiente:
-;; {:pack-size 1234
-;;  :population-size 2
-;;  :tournament-size 2
-;;  :replacement true
-;;  :rand-gen-prob 1/10
-;;  :stochastic-prob 1/10
-;;  :crossover-prob 1/10
-;;  :max-generations 200
-;;  :idle-generations 10
-;;  :report-delta 1
-;;  :name "amanas: Todo desde fichero 1"
+;; {:config {:pack-size 1234
+;;           :population-size 2
+;;           :tournament-size 2
+;;           :replacement true
+;;           :rand-gen-prob 1/10
+;;           :stochastic-prob 1/10
+;;           :crossover-prob 1/10
+;;           :max-generations 200
+;;           :idle-generations 10
+;;           :report-delta 1
+;;           :name "amanas: Todo desde fichero 1"}
 ;;  :objects [["objeto 1" 150 9]
 ;;            ["objeto 2" 120 8]
 ;;            ...]}
 (defn go-live-from-file [path]
   (let [data (read-string (slurp path))
-        data (assoc data :objects (map new-object (:objects data)))]
-    (decode (go-live data))))
+        config (:config data)
+        objects (map new-object (:objects data))]
+    (decode (go-live config objects))))
