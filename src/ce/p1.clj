@@ -225,8 +225,8 @@
 ;;  ...
 ;; ]
 (defn go-live [conf objs]
-  (!reset config conf)
-  (!reset objects (arrange-objects objs))
+  (reset! config conf)
+  (reset! objects (arrange-objects objs))
   (loop [generation 0
          [best-parent & more :as parents] (->> (rand-population) (sort-by fitness) reverse)]
     (report-status @config generation best-parent (fitness best-parent) "running" (decode best-parent))
