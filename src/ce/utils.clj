@@ -22,18 +22,19 @@
 ;; - best: mejor individuo de la generación actual
 ;; - generation: generación por la que va la evolución del experimento
 ;; - fitness: la fitness alcanzada por el mejor individuo de la generación en curso
-(defn report-status [config generation best best-fitness result decoded]
+(defn report-status [config generation best fitness volume result decoded]
   (reset! status (merge {:config config
                          :best best
                          :best-decoded decoded
                          :result result
                          :generation generation
                          :current-time (now)
-                         :best-fitness best-fitness}
+                         :best-fitness fitness
+                         :best-volume volume}
                         (if (zero? generation)
                           {:status [["Generation" "Fitness"]]
                            :start-time (now)}
-                          {:status (conj (:status @status) [generation best-fitness])
+                          {:status (conj (:status @status) [generation fitness])
                            :start-time (:start-time @status)})))
   (when (zero? (mod generation (:report-delta config)))
     (post-status (:name config))))

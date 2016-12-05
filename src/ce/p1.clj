@@ -12,19 +12,19 @@
 ;; valores convenientemente
 (def default-config
   {;; El tamaño de la mochila
-    :pack-size 10
+    :pack-size 500 ;; [100,10.000] [10.000,1.000.000]
     ;; Probabilidad de activación de los genes cuando se genera un individuo
     :rand-gen-prob 1/2
     ;; Tamaño inicial de la población
-    :population-size 10
-    ;; Probabilidad utilizada para selección estocástica
-    :stochastic-prob 3/4
+    :population-size 10 ;; [10,100]
+    ;; Probabilidad utilizada para selección estocástica en el torneo
+    :stochastic-prob 9/10
     ;; Número de individuos seleccionados por ronda en selección por torneo
-    :tournament-size 5
+    :tournament-size 2 ;; Máxima explotación
     ;; Torneo con o sin reemplazamiento
     :replacement true
     ;; Pobabilidad de mezcla en crossover
-    :crossover-prob 3/4
+    :crossover-prob 3/4 ;; [0.6,0.9]
     ;; Número de generaciones tope para el experimento
     :max-generations 100
     ;; Número de generaciones sin mejora del fitness que se permiten
@@ -52,8 +52,8 @@
 ;; - max-vol: volument máximo
 (defn rand-object [i max-val max-vol]
   (new-object (str "object " i)
-              (inc (rand-int max-val))
-              (inc (rand-int max-vol))))
+              (inc (/ (rand-int (* 100 (dec max-val))) 100))
+              (inc (/ (rand-int (* 100 (dec max-vol))) 100))))
 
 ;; Inicialmente, cada objeto lo represento por un mapa con claves
 ;; nam (nombre), val (valor) y vol (volumen).
@@ -87,15 +87,16 @@
 ;; el primer y tercer objetos (una vez reordenados con la función
 ;; arrange-objects)
 
-;; Función que devuelve el valor de aptitud o conveniencia de un individuo.
+;; Función que devuelve el valor de aptitud o conveniencia de un individuo y
+;; el volumen de la mochila que rellena un individuo antes de desbordarla.
 ;; Procedimiento:
 ;;  - se queda con los objetos que tiene en la mochila (gen true)
 ;;    ordenados por ratio descendente
 ;;  - acumula los valores de los objetos, mientras quepan en la mochila
-;;  - devuelve el valor acumulado
+;;  - devuelve el valor acumulado y el volumen acumulado
 ;; Parámetros:
 ;;  - individual: el individuo
-(defn fitness [individual]
+(defn fitness-and-volume [individual]
   (->> individual
        (map-indexed (fn [i v] (if v (get @objects i))))
        (remove nil?)
@@ -103,8 +104,20 @@
                      [(+ acum-val (:val o)) (+ acum-vol (:vol o))])
                    [0 0])
        (filter #(<= (last %) (:pack-size @config) ))
-       last
-       first))
+       last))
+
+;; Función que devuelve el valor de aptitud o conveniencia de un individuo
+;; Parámetros:
+;;  - individual: el individuo
+(defn fitness [individual]
+  (first (fitness-and-volume individual)))
+
+;; Función que devuelve el volumen de mochila que rellena un individuo
+;; antes de desbordarla.
+;; Parámetros:
+;;  - individual: el individuo
+(defn volume [individual]
+  (second (fitness-and-volume individual)))
 
 ;; Devuelve la representación de un individuo como el conjunto de objetos
 ;; que introduce en la mochila.
@@ -212,15 +225,15 @@
 ;;  - objects: los objetos a introducir en la mochila.
 ;;  - config: mapa con la configuración del experimento.
 ;; La configuración adopta esta forma:
-;; {:pack-size 755
-;;  :population-size 50
-;;  :tournament-size 5
+;; {:pack-size 500
+;;  :rand-gen-prob 1/2
+;;  :population-size 10
+;;  :stochastic-prob 9/10
+;;  :tournament-size 2
 ;;  :replacement true
-;;  :rand-gen-prob 5/10
-;;  :stochastic-prob 8/10
-;;  :crossover-prob 5/10
-;;  :max-generations 200
-;;  :idle-generations 20
+;;  :crossover-prob 3/4
+;;  :max-generations 100
+;;  :idle-generations 5
 ;;  :report-delta 1
 ;;  :name "Nombre del experimento"}
 ;; Los objetos son un array con esta forma:
@@ -233,9 +246,11 @@
   (reset! objects (arrange-objects objs))
   (loop [generation 0
          [best-parent & more :as parents] (->> (rand-population) (sort-by fitness) reverse)]
-    (report-status @config generation best-parent (fitness best-parent) "running" (decode best-parent))
+    (report-status @config generation best-parent (fitness best-parent)
+                   (volume best-parent) "running" (decode best-parent))
     (if (done? generation best-parent)
-      (do (report-status @config generation best-parent (fitness best-parent)
+      (do (report-status @config generation best-parent
+                         (fitness best-parent) (volume best-parent)
                          (done-reason generation best-parent) (decode best-parent))
         best-parent)
       (let [[best-child & more :as offspring] (->> parents build-offspring (sort-by fitness) reverse)
@@ -250,15 +265,15 @@
 ;; Devuelve el mejor individuo encontrado.
 ;; - path: ruta al fichero con objetos y configuración a utilizar
 ;; El ficero tiene que tener un formato como el siguiente:
-;; {:config {:pack-size 1234
-;;           :population-size 2
+;; {:config {:pack-size 500
+;;           :rand-gen-prob 1/2
+;;           :population-size 10
+;;           :stochastic-prob 9/10
 ;;           :tournament-size 2
 ;;           :replacement true
-;;           :rand-gen-prob 1/10
-;;           :stochastic-prob 1/10
-;;           :crossover-prob 1/10
-;;           :max-generations 200
-;;           :idle-generations 10
+;;           :crossover-prob 3/4
+;;           :max-generations 100
+;;           :idle-generations 5
 ;;           :report-delta 1
 ;;           :name "amanas: Todo desde fichero 1"}
 ;;  :objects [["objeto 1" 150 9]

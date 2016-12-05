@@ -17,12 +17,30 @@
                     :max-generations 200
                     :idle-generations 5
                     :report-delta 1}
-                   (map #(rand-object % 10 10) (range 100)))))
+                   (map #(rand-object % 100 100) (range 100)))))
 
 ;; Plantilla para experimentos con objetos
 ;; y configuración desde fichero
 ;; !!!Descomentar para su ejecución!!!
 (comment
   (go-live-from-file "resources/data/rossetacode.scm"))
+
+
+;; Experimento sencillo
+;; 100 objetos
+;; con valor y volumen aleatoriamente en [1, 100]
+;; y como capacidad de la mochila un valor aleatorio en el intervalo real [100, 10.000]
+
+
+
+
+
+
+
+
+
+
+
+
 
 
