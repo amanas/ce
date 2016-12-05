@@ -75,7 +75,7 @@
                     $('#status').html('Status: ' + data.result +
                                       '\nGeneration: ' + data.generation +
                                       '\nTime elapsed: ' + (data['current-time'] - data['start-time'])/1000 + ' seconds'+
-                                      '\nBest individual fitness: ' + data['best-rel-fitness']);
+                                      '\nBest individual fitness: ' + data['best-fitness']);
                     $('#best-decoded').html(JSON.stringify(data['best-decoded'].map(function(obj){
                         return [obj.nam,obj.val,obj.vol,obj.ratio].toString();
                     }), null, 2));
