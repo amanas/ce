@@ -11,7 +11,7 @@
 
 ;; Envía el estado a un web service en la nube para permitir la visualización
 ;; del estado del experimento en tiempo real.
-;; Ábrase http://amanas.ml/ce/resources/dashboard.html en un navegador web.
+;; Ábrase http://amanas.ml/ce/status.html en un navegador web.
 (defn- post-status [name]
   (http/post (format "http://amanas.ml/ce/service.php?action=post&name=%s" name)
              {:body (json/encode @status)
