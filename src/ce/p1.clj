@@ -70,9 +70,7 @@
 ;;  - individual: el individuo
 (defn fitness [individual]
   (->> individual
-       (interleave (range (count individual)))
-       (partition 2)
-       (pmap (fn [[i v]] (if v (get @objects i))))
+       (map-indexed (fn [i v] (if v (get @objects i))))
        (remove nil?)
        (reductions (fn [[acum-val acum-vol] o]
                      [(+ acum-val (:val o)) (+ acum-vol (:vol o))])
@@ -112,7 +110,8 @@
          selected []]
     (if (or (empty? population) (<= size (count selected))) selected
       (let [individual (->> population shuffle (take @tournament-round-size)
-                            (sort-by fitness) reverse first-stochastic)]
+                            (pmap (fn [ind] [(fitness ind) ind]))
+                            (sort-by first) reverse (map second) first-stochastic)]
         (recur (if @replacement (remove (partial = individual) population) population)
                (conj selected individual))))))
 
