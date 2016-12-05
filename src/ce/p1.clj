@@ -27,9 +27,11 @@
     :crossover-prob 3/4
     ;; Número de generaciones tope para el experimento
     :max-generations 100
-    ;; Número de generaciones sin mejora del fitness que se permiten antes de dar por acabado el exp.
+    ;; Número de generaciones sin mejora del fitness que se permiten
+    ;; antes de dar por acabado el exp.
     :idle-generations 5
-    ;; Cada cuantas generaciones se reporta el estado al web-service en la nube para su visualización.
+    ;; Cada cuantas generaciones se reporta el estado al web-service
+    ;;en la nube para su visualización.
     :report-delta 1})
 
 ;; En esta variable almacenaremos la configuración propia de cada ejecución
@@ -49,7 +51,9 @@
 ;; - max-val: valor máximo
 ;; - max-vol: volument máximo
 (defn rand-object [i max-val max-vol]
-  (new-object (str "object " i) (inc (rand-int max-val)) (inc (rand-int max-vol))))
+  (new-object (str "object " i)
+              (inc (rand-int max-val))
+              (inc (rand-int max-vol))))
 
 ;; Inicialmente, cada objeto lo represento por un mapa con claves
 ;; nam (nombre), val (valor) y vol (volumen).
@@ -72,10 +76,10 @@
        (map-indexed (fn [i v] {i v}))
        (apply merge)))
 
-;; En esta variable almacenaremos los objetos que se quieren introducir en la mochila
-;; reordenados apropiadamente.
-;; La inicializo con valores aleatorios pero en cada ejecución sera actualizada con
-;; los objetos propios de cada experimento.
+;; En esta variable almacenaremos los objetos que se quieren introducir
+;; en la mochila reordenados apropiadamente.
+;; La inicializo con valores aleatorios pero en cada ejecución será
+;; actualizada con los objetos propios de cada experimento.
 (def objects (atom (arrange-objects (map #(rand-object % 100 100) (range 100)))))
 
 ;; Decido además representar cada individuo como un vector de genes binarios.
@@ -189,7 +193,7 @@
 (defn done-reason [generation best]
   (cond
     (too-much-generations? generation) "Done! Enough generations lived"
-    (too-much-idle? generation best) "Done! Too many generations without improving fitness"
+    (too-much-idle? generation best)   "Done! Too many generations without improving fitness"
     :else "Should never happen"))
 
 ;; Construye la nueva generación a partir de la generación actual
