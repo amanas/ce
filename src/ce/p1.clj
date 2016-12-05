@@ -263,7 +263,10 @@
 
 ;; Inicializa y lleva a cabo la evolución. Reporta el resultado.
 ;; Devuelve el mejor individuo encontrado.
-;; - path: ruta al fichero con objetos y configuración a utilizar
+;;  - path: ruta al fichero con objetos y configuración a utilizar
+;;  - config-override: parámetros de la configuración indicada en el fichero
+;;                     que se desean sobreescribir en esta ejecución. Tiene el mismo
+;;                     formato que config.
 ;; El ficero tiene que tener un formato como el siguiente:
 ;; {:config {:pack-size 500
 ;;           :rand-gen-prob 1/2
@@ -279,8 +282,8 @@
 ;;  :objects [["objeto 1" 150 9]
 ;;            ["objeto 2" 120 8]
 ;;            ...]}
-(defn go-live-from-file [path]
+(defn go-live-from-file [path & [config-override]]
   (let [data (read-string (slurp path))
-        config (:config data)
+        config (merge (:config data) config-override)
         objects (map new-object (:objects data))]
     (decode (go-live config objects))))
