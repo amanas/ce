@@ -182,7 +182,7 @@
 
 ;; Determina si la evolución ha llegado a su fin, bien por haberse alcanzado
 ;; demasiadas generaciones, bien por llevar demasiadas generaciones sin que se
-;; incremente el fitness.
+;; incremente el fitness del mejor individuo.
 ;;  - generation: la generación en curso
 ;;  - best: el mejor individuo de la generación
 (defn done? [generation best]
