@@ -1,14 +1,14 @@
 {:pack-size 400
  :population-size 5
- :tournament-round-size 5
+ :tournament-size 5
  :replacement true
  :rand-gen-prob 5/10
- :first-stochastic-prob 8/10
+ :stochastic-prob 8/10
  :crossover-prob 5/10
- :generations-threshold 200
- :blockage-delta 20
+ :max-generations 200
+ :idle-generations 20
  :report-delta 1
- :name "amanas: Rosseta Code desde fichero"
+ :name "amanas: Rosseta Code"
  :objects [["map" 150 9]
            ["compass" 35 13]
            ["water" 200 153]

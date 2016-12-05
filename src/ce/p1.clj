@@ -20,17 +20,17 @@
 ;; Tamaño inicial de la población
 (def population-size (atom 10))
 ;; Probabilidad utilizada para selección estocástica
-(def first-stochastic-prob (atom 0.8))
+(def stochastic-prob (atom 0.8))
 ;; Número de individuos seleccionados por ronda en selección por torneo
-(def tournament-round-size (atom 5))
+(def tournament-size (atom 5))
 ;; Torneo con o sin reemplazamiento
 (def replacement (atom true))
 ;; Pobabilidad de mezcla en crossover
 (def crossover-prob (atom 0.6))
 ;; Número de generaciones tope para el experimento
-(def generations-threshold (atom 100))
-;; Número de generaciones sin mejora del delta que se permiten antes de dar por acabado el exp.
-(def blockage-delta (atom 10))
+(def max-generations (atom 100))
+;; Número de generaciones sin mejora del fitness que se permiten antes de dar por acabado el exp.
+(def idle-generations (atom 10))
 ;; Cada cuantas generaciones se reporta el estado al web-service en la nube para su visualización.
 (def report-delta (atom 5))
 
@@ -86,6 +86,22 @@
         reds (reductions + (map :vol objects))]
     (take (count (take-while (partial >= @pack-size) reds)) objects)))
 
+;; Genera un objeto a partir de sus propiedades.
+;; - nam: nombre del objeto
+;; - val: valor del objeto
+;; - vol: volumen del objeto
+(defn new-object
+  ([[nam val vol]] (new-object nam val vol))
+  ([nam val vol] {:nam nam :val val :vol vol}))
+
+;; Genera un objeto aleatoriamente con valor entre 0 y max-val y
+;; volumen entre 1 y max-vol.
+;; - i: número de objeto
+;; - max-val: valor máximo
+;; - max-vol: volument máximo
+(defn rand-object [i max-val max-vol]
+  (new-object (str "object " i) (rand-int max-val) (inc (rand-int (dec max-vol)))))
+
 ;; Genera aleatoriamente un individuo.
 (defn rand-individual []
   (repeatedly (count @objects) (fn [] (<= (rand) @rand-gen-prob))))
@@ -94,12 +110,12 @@
 (defn rand-population []
   (repeatedly @population-size (fn [] (rand-individual))))
 
-;; Selecciona el primer elmento de una lista con probabilidad first-stochastic-prob.
+;; Selecciona el primer elmento de una lista con probabilidad stochastic-prob.
 ;; De no ser seleccionado, selecciona el primero del resto con probabilidad
-;;  first-stochastic-prob también. Y así hasta agotar la lista.
+;;  stochastic-prob también. Y así hasta agotar la lista.
 (defn first-stochastic [col]
   (loop [[elem & more] col]
-    (if (or (empty? more) (<= (rand) @first-stochastic-prob)) elem
+    (if (or (empty? more) (<= (rand) @stochastic-prob)) elem
       (recur more))))
 
 ;; Selecciona por torneo estocástico.
@@ -109,7 +125,7 @@
   (loop [population population
          selected []]
     (if (or (empty? population) (<= size (count selected))) selected
-      (let [individual (->> population shuffle (take @tournament-round-size)
+      (let [individual (->> population shuffle (take @tournament-size)
                             (pmap (fn [ind] [(fitness ind) ind]))
                             (sort-by first) reverse (map second) first-stochastic)]
         (recur (if @replacement (remove (partial = individual) population) population)
@@ -136,7 +152,7 @@
 ;; Determina si se ha alcanzado el máxido de generaciones del problema.
 ;;  - generation: la generación en curso
 (defn enough-generations? [generation]
-  (<= @generations-threshold generation))
+  (<= @max-generations generation))
 
 ;; Variable donde almacenamos los mejores individuos de la historia reciente.
 (def best-history (atom []))
@@ -146,8 +162,8 @@
 ;;  - generation: la generación en curso
 ;;  - best: el mejor individuo de la generación
 (defn enough-blockage? [generation best]
-  (swap! best-history (fn [h] (take @blockage-delta (concat [best] h))))
-  (and (< @blockage-delta generation)
+  (swap! best-history (fn [h] (take @idle-generations (concat [best] h))))
+  (and (< @idle-generations generation)
        (<= (apply max (map fitness (butlast @best-history)))
            (fitness (last @best-history)))))
 
@@ -186,12 +202,12 @@
   (reset! objects (arrange-objects (:objects config)))
   (reset! rand-gen-prob (:rand-gen-prob config))
   (reset! population-size (:population-size config))
-  (reset! first-stochastic-prob (:first-stochastic-prob config))
-  (reset! tournament-round-size (:tournament-round-size config))
+  (reset! stochastic-prob (:stochastic-prob config))
+  (reset! tournament-size (:tournament-size config))
   (reset! replacement (:replacement config))
   (reset! crossover-prob (:crossover-prob config))
-  (reset! generations-threshold (:generations-threshold config))
-  (reset! blockage-delta (:blockage-delta config))
+  (reset! max-generations (:max-generations config))
+  (reset! idle-generations (:idle-generations config))
   (reset! report-delta (:report-delta config)))
 
 ;; Inicializa y lleva a cabo la evolución. Reporta el resultado.
@@ -200,13 +216,13 @@
 ;; {:pack-size 755
 ;;  :objects objects
 ;;  :population-size 50
-;;  :tournament-round-size 5
+;;  :tournament-size 5
 ;;  :replacement true
 ;;  :rand-gen-prob 5/10
-;;  :first-stochastic-prob 8/10
+;;  :stochastic-prob 8/10
 ;;  :crossover-prob 5/10
-;;  :generations-threshold 200
-;;  :blockage-delta 20
+;;  :max-generations 200
+;;  :idle-generations 20
 ;;  :report-delta 1
 ;;  :name "Nombre del experimento"}
 (defn go-live [config]
@@ -226,27 +242,19 @@
         (recur (inc generation) elitism-offspring)))))
 
 
-;; Genera un objeto interpretable por mi algoritmo a partir de sus propiedades.
-;; - nam: nombre del objeto
-;; - val: valor del objeto
-;; - vol: volumen del objeto
-(defn new-object
-  ([[nam val vol]] (new-object nam val vol))
-  ([nam val vol] {:nam nam :val val :vol vol}))
-
 ;; Inicializa y lleva a cabo la evolución. Reporta el resultado.
 ;; Devuelve el mejor individuo encontrado.
 ;; - path: ruta al fichero con objetos y configuración a utilizar
 ;; El ficero tiene que tener un formato como el siguiente:
 ;; {:pack-size 1234
 ;;  :population-size 2
-;;  :tournament-round-size 2
+;;  :tournament-size 2
 ;;  :replacement true
 ;;  :rand-gen-prob 1/10
-;;  :first-stochastic-prob 1/10
+;;  :stochastic-prob 1/10
 ;;  :crossover-prob 1/10
-;;  :generations-threshold 200
-;;  :blockage-delta 10
+;;  :max-generations 200
+;;  :idle-generations 10
 ;;  :report-delta 1
 ;;  :name "amanas: Todo desde fichero 1"
 ;;  :objects [["objeto 1" 150 9]
