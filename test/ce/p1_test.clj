@@ -50,7 +50,7 @@
 ;; Lo ejecuto 10 veces cada uno
 (comment
   (doall
-    (for [t [2 3 4 5 6]
+    (for [t [2 3 4 5 6 10]
           r (range 10)]
       (do (prn t r)
         (go-live-from-file simple-path
@@ -88,7 +88,7 @@
 ;; Lo ejecuto 5 veces cada uno
 (comment
   (doall
-    (for [t [2 3 4 5 6]
+    (for [t [2 3 4 5 6 10]
           r (range 5)]
       (do (prn t r)
         (go-live-from-file complex-path
