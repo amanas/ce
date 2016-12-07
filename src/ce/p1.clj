@@ -1,5 +1,6 @@
 (ns ce.p1
-  (:require [ce.utils :refer :all])
+  (:require [ce.utils :refer :all]
+            [clojure.java.io :as io])
   (:gen-class))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -289,9 +290,6 @@
         objects (map new-object (:objects data))]
     (decode (go-live config objects))))
 
-(def simple-path "resources/data/simple.edn")
-(def complex-path "resources/data/complex.edn")
-
 ;; Función que permite ejecutar el algoritmo invocando el jar ejecutable desde
 ;; una consola.
 ;; El comando para llamar al algoritmo es:
@@ -306,7 +304,9 @@
   (let [config {:name (format "profe: %s - %s" type tour)
                 :tournament-size (read-string tour)}]
     (case type
-      "simple"  (clojure.pprint/pprint (decode (go-live-from-file simple-path  config)))
-      "complex" (clojure.pprint/pprint (decode (go-live-from-file complex-path config)))
+      "simple"  (clojure.pprint/pprint
+                  (decode (go-live-from-file (io/resource "data/simple.edn")  config)))
+      "complex" (clojure.pprint/pprint
+                  (decode (go-live-from-file (io/resource "data/complex.edn") config)))
       (prn "type must be 'simple' or 'complex'. '" type "' provided.")))
   (System/exit 0))
