@@ -1,5 +1,6 @@
 (ns ce.p1
-  (:require [ce.utils :refer :all]))
+  (:require [ce.utils :refer :all])
+  (:gen-class))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Actividad 1: Problema de la mochila binario ;;
@@ -287,3 +288,29 @@
         config (merge (:config data) config-override)
         objects (map new-object (:objects data))]
     (decode (go-live config objects))))
+
+(def simple-path "resources/data/simple.edn")
+(def complex-path "resources/data/complex.edn")
+
+;; Función que permite ejecutar el algoritmo invocando el jar ejecutable desde
+;; una consola.
+;; El comando para llamar al algoritmo es:
+;; java -jar ejecutable.jar 'simple|complex' 'tournament-size'
+;; Por ejemplo, se puede llamar con:
+;; java -jar ejecutable.jar 'simple' '5'
+;; Esta llamada ejecutará el experimento, cuya evolución puede verse en
+;; http://amanas.ml/ce/status.html
+;; seleccionando en el combobox el experimento con nombre:
+;; profe: simple|complex - tournament-size
+(defn -main [& [type tour :as args]]
+  (let [config {:name (format "profe: %s - %s" type tour)
+                :tournament-size (read-string tour)}]
+    (case type
+      "simple"  (prn (decode (go-live-from-file simple-path  config)))
+      "complex" (prn (decode (go-live-from-file complex-path config)))
+      (prn "type must be 'simple' or 'complex'. '" type "' provided."))))
+
+(-main "simple" "5")
+
+
+
