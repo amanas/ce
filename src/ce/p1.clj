@@ -298,19 +298,14 @@
 ;; java -jar ejecutable.jar 'simple|complex' 'tournament-size'
 ;; Por ejemplo, se puede llamar con:
 ;; java -jar ejecutable.jar 'simple' '5'
-;; Esta llamada ejecutará el experimento, cuya evolución puede verse en
+;; Esta llamada ejecutará el experimento, cuya evolución puede verse en:
 ;; http://amanas.ml/ce/status.html
 ;; seleccionando en el combobox el experimento con nombre:
-;; profe: simple|complex - tournament-size
+;; profe: simple - 5
 (defn -main [& [type tour :as args]]
   (let [config {:name (format "profe: %s - %s" type tour)
                 :tournament-size (read-string tour)}]
     (case type
-      "simple"  (prn (decode (go-live-from-file simple-path  config)))
-      "complex" (prn (decode (go-live-from-file complex-path config)))
+      "simple"  (clojure.pprint/pprint (decode (go-live-from-file simple-path  config)))
+      "complex" (clojure.pprint/pprint (decode (go-live-from-file complex-path config)))
       (prn "type must be 'simple' or 'complex'. '" type "' provided."))))
-
-(-main "simple" "5")
-
-
-
