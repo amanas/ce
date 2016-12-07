@@ -25,7 +25,7 @@
 (defn report-status [config generation best fitness volume result decoded]
   (reset! status (merge {:config config
                          :best best
-                         :best-decoded decoded
+                         :best-decoded (take 200 decoded)
                          :result result
                          :generation generation
                          :current-time (now)
