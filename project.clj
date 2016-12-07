@@ -7,4 +7,5 @@
                  [clj-http "2.3.0"]
                  [cheshire "5.6.3"]]
   :aot [ce.p1]
-  :main ce.p1)
+  :main ce.p1
+  :uberjar-name "ejecutable.jar")
