@@ -55,7 +55,7 @@
       (do (prn t r)
         (go-live-from-file simple-path
                            {:name (format "amanas: simple - tournament %s - run %s" t r)
-                            :tournament-size 2})))))
+                            :tournament-size t})))))
 
 ;; Experimento complejo
 ;; 100 individuos
@@ -93,5 +93,5 @@
       (do (prn t r)
         (go-live-from-file complex-path
                            {:name (format "amanas: complex - tournament %s - run %s" t r)
-                            :tournament-size 2})))))
+                            :tournament-size t})))))
 
