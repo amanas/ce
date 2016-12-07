@@ -49,7 +49,7 @@
                 var $el = $("#combobox");
                 $el.empty();
                 $el.append($('<option value="" disabled selected style="display:none;">Choose experiment...</option>'));
-                $.each(data, function(k,v) {
+                $.each(data.sort(), function(k,v) {
                     $el.append($("<option></option>").attr("value", v).text(v));
                 });
                 $("#combobox").val(experiment);
