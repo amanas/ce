@@ -77,7 +77,7 @@
                                       '\nTime elapsed: ' + (data['current-time'] - data['start-time'])/1000 + ' seconds'+
                                       '\nBest individual fitness: ' + data['best-fitness'] +
                                       '\nVolume occupied: ' + data['best-volume']);
-                    $('#best-decoded').html(data['best-decoded'].map(function(obj){
+                    $('#best-decoded').html(data['best-decoded'].slice(0,100).map(function(obj){
                         return '[' + obj.nam + ', ' + obj.val + ', ' + obj.vol + ']\n';
                     }));
                  } catch (e) {
@@ -149,7 +149,7 @@
               <pre id="config"></pre>
            </div>
           <div class="col-md-6">
-              <p>Best individual found [nombre, valor, volumen],...<p>
+              <p>Top 100 objects of best individual found [nombre, valor, volumen],...<p>
               <pre id="best-decoded"></pre>
            </div>
           </div>
