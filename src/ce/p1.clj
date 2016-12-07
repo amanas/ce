@@ -295,9 +295,9 @@
 ;; Función que permite ejecutar el algoritmo invocando el jar ejecutable desde
 ;; una consola.
 ;; El comando para llamar al algoritmo es:
-;; java -jar ejecutable.jar 'simple|complex' 'tournament-size'
+;; java -jar ejecutable.jar simple|complex tournament-size
 ;; Por ejemplo, se puede llamar con:
-;; java -jar ejecutable.jar 'simple' '5'
+;; java -jar ejecutable.jar simple 5
 ;; Esta llamada ejecutará el experimento, cuya evolución puede verse en:
 ;; http://amanas.ml/ce/status.html
 ;; seleccionando en el combobox el experimento con nombre:
@@ -308,4 +308,5 @@
     (case type
       "simple"  (clojure.pprint/pprint (decode (go-live-from-file simple-path  config)))
       "complex" (clojure.pprint/pprint (decode (go-live-from-file complex-path config)))
-      (prn "type must be 'simple' or 'complex'. '" type "' provided."))))
+      (prn "type must be 'simple' or 'complex'. '" type "' provided.")))
+  (System/exit 0))
