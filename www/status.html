@@ -79,7 +79,7 @@
                                       '\nVolume occupied: ' + data['best-volume']);
                     $('#best-decoded').html(data['best-decoded'].map(function(obj){
                         return '[' + obj.nam + ', ' + obj.val + ', ' + obj.vol + ']\n';
-                    }));
+                    })+'...');
                  } catch (e) {
                      console.log(e);
                  }
