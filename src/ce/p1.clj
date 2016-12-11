@@ -154,7 +154,9 @@
       (let [individual (->> population shuffle (take (:tournament-size @config))
                             (pmap (fn [ind] [(fitness ind) ind]))
                             (sort-by first) reverse (map second) first-stochastic)]
-        (recur (if (:replacement @config) (remove (partial = individual) population) population)
+        (recur (if (:replacement @config)
+                 population
+                 (remove (partial = individual) population))
                (conj selected individual))))))
 
 ;; Cruza dos padres por un punto o devuelve los padres tal cual, dependiendo

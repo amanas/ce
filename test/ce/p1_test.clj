@@ -48,14 +48,14 @@
 
 ;; Ejecución de simple.edn con tamaño de torneo 2, 3, 5 y 10
 ;; Lo ejecuto 10 veces cada uno
-(comment
-  (doall
-    (for [t [2 3 4 5 6 10]
-          r (range 10)]
-      (do (prn t r)
-        (go-live-from-file simple-path
-                           {:name (format "amanas: simple - tournament %s - run %s" t r)
-                            :tournament-size t})))))
+(comment)
+(doall
+  (for [t [2 3 4 5 6 10]
+        r (range 10)]
+    (do (prn t r)
+      (go-live-from-file simple-path
+                         {:name (format "amanas: simple - tournament %s - run %s" t r)
+                          :tournament-size t}))))
 
 ;; Experimento complejo
 ;; 100 individuos
@@ -88,10 +88,11 @@
 ;; Lo ejecuto 5 veces cada uno
 (comment
   (doall
-    (for [t [2 3 4 5 6 10]
-          r (range 5)]
+    (for [t [2 10]
+          r (range 2)]
       (do (prn t r)
         (go-live-from-file complex-path
-                           {:name (format "amanas: complex - tournament %s - run %s" t r)
+                           {:name (format "amanas: complex no repl - tournament %s - run %s" t r)
+                            :replacement false
                             :tournament-size t})))))
 
