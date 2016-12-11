@@ -1,6 +1,6 @@
 <?php 
     
-# apc_delete ("profe: experimento 1");
+# apc_delete ("amanas: complex - tournament 3 - run 0");
 
 if ($_GET["action"] == "post") {
     apc_store($_GET["name"], file_get_contents('php://input'), 0);
