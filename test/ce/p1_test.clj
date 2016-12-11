@@ -84,11 +84,11 @@
        with-out-str
        (spit complex-path)))
 
-;; Ejecución de complex.edn con tamaño de torneo 2, 3, 4, 5, 6 y 10
+;; Ejecución de complex.edn con tamaño de torneo 2, 3, 4, 5, 6, 10 y 25
 ;; Lo ejecuto 5 veces cada uno
 (comment
   (doall
-    (for [t [2 3 4 5 6 10]
+    (for [t [2 3 4 5 6 10 25]
           r (range 5)]
       (do (prn t r)
         (go-live-from-file complex-path
