@@ -24,6 +24,7 @@
 ;; 100 objetos
 ;; con valor y volumen aleatoriamente entre [1, 100]
 ;; y con capacidad de la mochila un valor aleatorio en el intervalo real [100, 10.000]
+(def simple-path "resources/data/simple.edn")
 (comment
   (->> (range 100)
        (map #(rand-object % 100 100))
@@ -61,6 +62,7 @@
 ;; 10.000 objetos
 ;; con valor y volumen aleatoriamente entre [1, 100]
 ;; y con capacidad de la mochila un valor aleatorio en el intervalo real [10.000, 1.000.000]
+(def complex-path "resources/data/complex.edn")
 (comment
   (->> (range 1000)
        (map #(rand-object % 100 100))
