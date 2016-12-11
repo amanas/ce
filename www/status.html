@@ -77,9 +77,9 @@
                                       '\nTime elapsed: ' + (data['current-time'] - data['start-time'])/1000 + ' seconds'+
                                       '\nBest individual fitness: ' + data['best-fitness'] +
                                       '\nVolume occupied: ' + data['best-volume']);
-                    $('#best-decoded').html(data['best-decoded'].map(function(obj){
+                    $('#best-decoded').html(' ' + data['best-decoded'].map(function(obj){
                         return '[' + obj.nam + ', ' + obj.val + ', ' + obj.vol + ']\n';
-                    })+'...');
+                    }) + '...');
                  } catch (e) {
                      console.log(e);
                  }
