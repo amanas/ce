@@ -46,7 +46,7 @@
        with-out-str
        (spit simple-path)))
 
-;; Ejecución de simple.edn con tamaño de torneo 2, 3, 5 y 10
+;; Ejecución de simple.edn con tamaño de torneo 2, 3, 4, 5, 6 y 10
 ;; Lo ejecuto 10 veces cada uno
 (comment
   (doall
@@ -84,7 +84,7 @@
        with-out-str
        (spit complex-path)))
 
-;; Ejecución de complex.edn con tamaño de torneo 2, 3, 5 y 10
+;; Ejecución de complex.edn con tamaño de torneo 2, 3, 4, 5, 6 y 10
 ;; Lo ejecuto 5 veces cada uno
 (comment
   (doall
