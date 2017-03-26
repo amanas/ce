@@ -1,0 +1,3 @@
+# kill 14489; nohup jupyter notebook &
+# wget https://github.com/jmmcd/PonyGE2/archive/master.zip
+wget https://github.com/jmmcd/ponyge/archive/master.zip
