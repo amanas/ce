@@ -1,0 +1,44 @@
+
+evitar el efecto bloat:
+----------------------
+Cuando hablas de métodos para aplicar la reducción, si te refieres a evitar el efecto Bloat (asociado a la PG), ya se planteó en otro hilo de este foro que la mejor estrategia era establecer una longitud máxima de cromosoma.
+
+formas de cruzar y mutar
+------------------------
+1. 
+En GE, el cruce se realiza normalmente a nivel de codones y la mutación se suele hacer a nivel de bits o, también, a nivel de codones (esto también se comentó en uno de los hilos de este foro).
+
+2. 
+- Normalmente, el cruce en GE se aplica a nivel de codones. Si trabajas con cromosomas que contienen números enteros (codones). El punto de cruce se elige sin ninguna restricción (salvo la de la longitud máxima del individuo a cruzar).
+- En cuanto al operador de mutación se puede implementar también de dos formas:
+		A nivel de bits: cambiar 0 por 1 o viceversa.
+		A nivel de codones. En este caso, bastaría sustituir el codon seleccionado para mutación por un valor aletorio perteneciente al rango [0,255].
+
+
+búsqueda local
+--------------
+1. El AG implementado en la Actividad 1 es el que deberíais usar (convenientemente adaptado) como motor de búsqueda de la implementación GE. Por otro lado, el concepto de "búsqueda local" es diferente del concepto "motor de búsqueda".
+
+2. Estoy intentando implementar el algoritmo de búsqueda local que se describe en la sección 10 del libro base
+
+Interesante tu pregunta. La respuesta más inmediata podría ser considerar la búsqueda local como variaciones aleatorias de los codones del individuo cuya vecindad se está analizando (por ejemplo, analizar todos aquellos individuos resultantes de cambiar aleatoriamente un codón, cada vez, en el individuo original). Sin embargo, esto daría lugar, en la mayoría de los casos, a individuos muy diferentes al individuo analizado. No obstante, dado que el resultado de la búsqueda local se incorpora a la población sólo si ésta tuvo éxito, nunca tendría efectos negativos (lo que habría que analizar es si esto tendría efectos positivos).
+
+Otra opción podría ser la de asociar a cada individuo de la población un vector binario de la misma dimensión, de forma que un cero indicaría que el codón asociado representa un codón no-terminal y un 1 correspondería a un codón terminal. Esta información se podría utilizar luego en la búsqueda local para sólo cambiar aquellos codones que estén asociados a codones terminales. De esta forma, los individuos así generadores podrían ser más parecidos al individuo analizado y, por tanto, se podría hablar de búsqueda local con más propiedad.
+
+
+algoritmo:
+----------
+	-generamos población inicial
+	bucle:
+		-selección de padres
+		-operador de cruce
+		-operador de mutación
+		-evaluación de los individuos
+		-¿elitismo?
+		-selección de supervivientes (¿reemplazo generacional?)
+		
+		
+		
+control de validez de individuos:
+---------------------------------
+La forma más rápida de controlar que una función (individuo) está definida dentro del dominio de definición en el que se calcula la derivada, es en el paso del algoritmo en el que se evalua el fitness de la función (individuo). Es aquí donde se podría aplicar algún mecanismo de penalización para evitar que funciones (individuos) no definidas en el intervalo de definicion se propaguen en la población. El chequeo de si la función está definida en el intervalo considerado, se podría hacer, en primera aproximación, comprobando que la función devuelve valores finitos en todos los puntos de muestreo del intervalo de definición (observa que esto sería un paso anterior al de evaluar el fitness de la función (individuo)).
