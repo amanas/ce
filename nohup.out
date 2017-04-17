@@ -303,3 +303,50 @@ Se ha abierto una nueva ventana en la sesión actual del navegador.
 [I 23:26:01.394 NotebookApp] Saving file at /p3/p3.ipynb
 [I 23:27:37.531 NotebookApp] Saving file at /p3/p3.ipynb
 [I 23:29:33.604 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:31:37.557 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:31:38.953 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:32:11.674 NotebookApp] Saving file at /p3/p3.ipynb
+[C 23:32:20.555 NotebookApp] received signal 15, stopping
+[I 23:32:20.555 NotebookApp] Shutting down kernels
+[I 23:32:21.563 NotebookApp] Kernel shutdown: d3d2d6b7-4b2b-46dd-8777-e2aa7febb7a4
+[I 23:33:16.564 NotebookApp] [nb_conda_kernels] enabled, 3 kernels found
+[I 23:33:16.796 NotebookApp] [jupyter_nbextensions_configurator] enabled 0.2.4
+[I 23:33:17.472 NotebookApp] [nb_anacondacloud] enabled
+[I 23:33:17.475 NotebookApp] [nb_conda] enabled
+[I 23:33:17.508 NotebookApp] ✓ nbpresent HTML export ENABLED
+[I 23:33:17.508 NotebookApp] ✓ nbpresent PDF export ENABLED
+[I 23:33:17.510 NotebookApp] Serving notebooks from local directory: /home/yolki/Escritorio/ai/ce
+[I 23:33:17.510 NotebookApp] 0 active kernels 
+[I 23:33:17.510 NotebookApp] The Jupyter Notebook is running at: http://localhost:8888/?token=b9f371212fe9ffc99397e3082a38f92faa3dfec806a03ea7
+[I 23:33:17.510 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 23:33:17.511 NotebookApp] 
+    
+    Copy/paste this URL into your browser when you connect for the first time,
+    to login with a token:
+        http://localhost:8888/?token=b9f371212fe9ffc99397e3082a38f92faa3dfec806a03ea7
+[I 23:33:17.873 NotebookApp] Accepting one-time-token-authenticated connection from 127.0.0.1
+Se ha abierto una nueva ventana en la sesión actual del navegador.
+[I 23:33:28.549 NotebookApp] Kernel started: f04d18c7-4aff-4b31-a1c2-2e66731c0ede
+[W 23:33:29.048 NotebookApp] 404 GET /static/components/MathJax/jax/element/mml/optable/BasicLatin.js?rev=2.6.0 (127.0.0.1) 12.67ms referer=http://localhost:8888/notebooks/p3/p3.ipynb
+[I 23:34:01.579 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:34:10.775 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:34:14.042 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:35:13.781 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:36:00.646 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:37:28.550 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:39:28.571 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:41:28.861 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:43:28.561 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:44:03.780 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:47:28.566 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:53:28.565 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:57:28.559 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:57:56.544 NotebookApp] Saving file at /p3/p3.ipynb
+[I 00:01:28.558 NotebookApp] Saving file at /p3/p3.ipynb
+[I 00:01:37.258 NotebookApp] Saving file at /p3/p3.ipynb
+[I 00:05:28.847 NotebookApp] Saving file at /p3/p3.ipynb
+[I 00:07:28.593 NotebookApp] Saving file at /p3/p3.ipynb
+[I 00:09:28.630 NotebookApp] Saving file at /p3/p3.ipynb
+[I 00:10:14.880 NotebookApp] Saving file at /p3/p3.ipynb
+[I 00:10:59.371 NotebookApp] Saving file at /p3/p3.ipynb
+[I 00:11:34.365 NotebookApp] Saving file at /p3/p3.ipynb
