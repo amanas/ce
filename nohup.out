@@ -1,0 +1,150 @@
+[I 20:32:41.282 NotebookApp] [nb_conda_kernels] enabled, 3 kernels found
+[I 20:32:41.295 NotebookApp] Writing notebook server cookie secret to /run/user/1000/jupyter/notebook_cookie_secret
+[I 20:32:44.206 NotebookApp] [jupyter_nbextensions_configurator] enabled 0.2.4
+[I 20:32:45.402 NotebookApp] [nb_anacondacloud] enabled
+[I 20:32:45.438 NotebookApp] [nb_conda] enabled
+[I 20:32:45.855 NotebookApp] ✓ nbpresent HTML export ENABLED
+[I 20:32:45.855 NotebookApp] ✓ nbpresent PDF export ENABLED
+[I 20:32:45.875 NotebookApp] Serving notebooks from local directory: /home/yolki/Escritorio/ai/ce
+[I 20:32:45.876 NotebookApp] 0 active kernels 
+[I 20:32:45.876 NotebookApp] The Jupyter Notebook is running at: http://localhost:8888/?token=9099305bc7c2f9723e55e75e3ccfd1c99b8d4bcd5bbefa05
+[I 20:32:45.876 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 20:32:45.878 NotebookApp] 
+    
+    Copy/paste this URL into your browser when you connect for the first time,
+    to login with a token:
+        http://localhost:8888/?token=9099305bc7c2f9723e55e75e3ccfd1c99b8d4bcd5bbefa05
+[1989:1989:0417/203252.551478:ERROR:child_thread_impl.cc(762)] Request for unknown Channel-associated interface: ui::mojom::GpuMain
+[I 20:33:00.574 NotebookApp] Accepting one-time-token-authenticated connection from 127.0.0.1
+[I 20:33:03.160 NotebookApp] 302 GET /notebooks/Escritorio/ai/ce/p3/p3.ipynb (127.0.0.1) 1.09ms
+[W 20:33:14.393 NotebookApp] Notebook p3/p3.ipynb is not trusted
+[I 20:33:17.193 NotebookApp] Kernel started: 03225905-9b34-47bf-99fb-57b9701f0a05
+[W 20:33:18.568 NotebookApp] 404 GET /static/components/MathJax/jax/element/mml/optable/BasicLatin.js?rev=2.6.0 (127.0.0.1) 350.19ms referer=http://localhost:8888/notebooks/p3/p3.ipynb
+[I 20:35:16.573 NotebookApp] Saving file at /p3/p3.ipynb
+[W 20:35:16.577 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 20:37:16.568 NotebookApp] Saving file at /p3/p3.ipynb
+[W 20:37:16.572 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 20:39:16.556 NotebookApp] Saving file at /p3/p3.ipynb
+[W 20:39:16.559 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 20:41:16.571 NotebookApp] Saving file at /p3/p3.ipynb
+[W 20:41:16.575 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 20:43:16.569 NotebookApp] Saving file at /p3/p3.ipynb
+[W 20:43:16.573 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 20:45:16.569 NotebookApp] Saving file at /p3/p3.ipynb
+[W 20:45:16.573 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 20:47:16.570 NotebookApp] Saving file at /p3/p3.ipynb
+[W 20:47:16.573 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 20:49:16.551 NotebookApp] Saving file at /p3/p3.ipynb
+[W 20:49:16.554 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 20:51:16.562 NotebookApp] Saving file at /p3/p3.ipynb
+[W 20:51:16.565 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 20:52:41.904 NotebookApp] Saving file at /p3/p3.ipynb
+[W 20:52:41.907 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 20:53:16.573 NotebookApp] Saving file at /p3/p3.ipynb
+[W 20:53:16.578 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 20:54:27.200 NotebookApp] Saving file at /p3/p3.ipynb
+[W 20:54:27.203 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 20:55:16.577 NotebookApp] Saving file at /p3/p3.ipynb
+[W 20:55:16.581 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 20:56:17.550 NotebookApp] Kernel interrupted: 03225905-9b34-47bf-99fb-57b9701f0a05
+[I 20:56:49.435 NotebookApp] Saving file at /p3/p3.ipynb
+[W 20:56:49.438 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[C 20:56:50.944 NotebookApp] received signal 15, stopping
+[I 20:56:50.946 NotebookApp] Shutting down kernels
+[I 20:56:51.955 NotebookApp] Kernel shutdown: 03225905-9b34-47bf-99fb-57b9701f0a05
+[I 20:56:56.055 NotebookApp] [nb_conda_kernels] enabled, 3 kernels found
+[I 20:56:56.406 NotebookApp] [jupyter_nbextensions_configurator] enabled 0.2.4
+[I 20:56:57.029 NotebookApp] [nb_anacondacloud] enabled
+[I 20:56:57.031 NotebookApp] [nb_conda] enabled
+[I 20:56:57.066 NotebookApp] ✓ nbpresent HTML export ENABLED
+[I 20:56:57.066 NotebookApp] ✓ nbpresent PDF export ENABLED
+[I 20:56:57.068 NotebookApp] Serving notebooks from local directory: /home/yolki/Escritorio/ai/ce
+[I 20:56:57.068 NotebookApp] 0 active kernels 
+[I 20:56:57.068 NotebookApp] The Jupyter Notebook is running at: http://localhost:8888/?token=fcf8b0feae7cd728c98e5717920f88c8e7a50771ad30fd51
+[I 20:56:57.068 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 20:56:57.070 NotebookApp] 
+    
+    Copy/paste this URL into your browser when you connect for the first time,
+    to login with a token:
+        http://localhost:8888/?token=fcf8b0feae7cd728c98e5717920f88c8e7a50771ad30fd51
+[I 20:56:57.438 NotebookApp] Accepting one-time-token-authenticated connection from 127.0.0.1
+Se ha abierto una nueva ventana en la sesión actual del navegador.
+[W 20:57:00.881 NotebookApp] 404 GET /api/kernels/03225905-9b34-47bf-99fb-57b9701f0a05/channels?session_id=88D43F1EF9774C5C88B615CCEBABF112 (127.0.0.1): Kernel does not exist: 03225905-9b34-47bf-99fb-57b9701f0a05
+[W 20:57:00.895 NotebookApp] 404 GET /api/kernels/03225905-9b34-47bf-99fb-57b9701f0a05/channels?session_id=88D43F1EF9774C5C88B615CCEBABF112 (127.0.0.1) 78.35ms referer=None
+[W 20:57:05.523 NotebookApp] Notebook p3/p3.ipynb is not trusted
+[I 20:57:07.379 NotebookApp] Kernel started: 7007d89c-df6a-4c94-b32f-db2236a546c4
+[W 20:57:07.844 NotebookApp] 404 GET /static/components/MathJax/jax/element/mml/optable/BasicLatin.js?rev=2.6.0 (127.0.0.1) 3.07ms referer=http://localhost:8888/notebooks/p3/p3.ipynb
+[I 20:57:24.854 NotebookApp] Saving file at /p3/p3.ipynb
+[W 20:57:24.857 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 20:59:07.398 NotebookApp] Saving file at /p3/p3.ipynb
+[W 20:59:07.402 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 21:02:14.455 NotebookApp] Saving file at /p3/p3.ipynb
+[W 21:02:14.456 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 21:05:07.406 NotebookApp] Saving file at /p3/p3.ipynb
+[W 21:05:07.413 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 21:09:07.407 NotebookApp] Saving file at /p3/p3.ipynb
+[W 21:09:07.414 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 21:13:07.406 NotebookApp] Saving file at /p3/p3.ipynb
+[W 21:13:07.413 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[1989:1989:0417/211632.874710:ERROR:gles2_cmd_decoder.cc(5070)] GLES2DecoderImpl::ResizeOffscreenFramebuffer failed because offscreen FBO was incomplete.
+[1989:1989:0417/211632.874753:ERROR:gles2_cmd_decoder.cc(3486)] Could not allocate offscreen buffer storage.
+[1989:1989:0417/211632.889588:ERROR:gles2_cmd_decoder.cc(5070)] GLES2DecoderImpl::ResizeOffscreenFramebuffer failed because offscreen FBO was incomplete.
+[1989:1989:0417/211632.889631:ERROR:gles2_cmd_decoder.cc(3486)] Could not allocate offscreen buffer storage.
+[1989:1989:0417/211632.913680:ERROR:gles2_cmd_decoder.cc(5070)] GLES2DecoderImpl::ResizeOffscreenFramebuffer failed because offscreen FBO was incomplete.
+[1989:1989:0417/211632.913718:ERROR:gles2_cmd_decoder.cc(3486)] Could not allocate offscreen buffer storage.
+[1989:1989:0417/211632.948164:ERROR:gles2_cmd_decoder.cc(5070)] GLES2DecoderImpl::ResizeOffscreenFramebuffer failed because offscreen FBO was incomplete.
+[1989:1989:0417/211632.948276:ERROR:gles2_cmd_decoder.cc(3486)] Could not allocate offscreen buffer storage.
+[I 21:17:07.407 NotebookApp] Saving file at /p3/p3.ipynb
+[W 21:17:07.409 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 21:21:07.417 NotebookApp] Saving file at /p3/p3.ipynb
+[W 21:21:07.427 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[1989:1989:0417/212132.798478:ERROR:gles2_cmd_decoder.cc(5070)] GLES2DecoderImpl::ResizeOffscreenFramebuffer failed because offscreen FBO was incomplete.
+[1989:1989:0417/212132.798519:ERROR:gles2_cmd_decoder.cc(3486)] Could not allocate offscreen buffer storage.
+[1989:1989:0417/212132.809976:ERROR:gles2_cmd_decoder.cc(5070)] GLES2DecoderImpl::ResizeOffscreenFramebuffer failed because offscreen FBO was incomplete.
+[1989:1989:0417/212132.810016:ERROR:gles2_cmd_decoder.cc(3486)] Could not allocate offscreen buffer storage.
+[1989:1989:0417/212132.829365:ERROR:gles2_cmd_decoder.cc(5070)] GLES2DecoderImpl::ResizeOffscreenFramebuffer failed because offscreen FBO was incomplete.
+[1989:1989:0417/212132.829529:ERROR:gles2_cmd_decoder.cc(3486)] Could not allocate offscreen buffer storage.
+[1989:1989:0417/212132.858099:ERROR:gles2_cmd_decoder.cc(5070)] GLES2DecoderImpl::ResizeOffscreenFramebuffer failed because offscreen FBO was incomplete.
+[1989:1989:0417/212132.858188:ERROR:gles2_cmd_decoder.cc(3486)] Could not allocate offscreen buffer storage.
+[I 21:23:07.401 NotebookApp] Saving file at /p3/p3.ipynb
+[W 21:23:07.408 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[1989:1989:0417/212632.850489:ERROR:gles2_cmd_decoder.cc(5070)] GLES2DecoderImpl::ResizeOffscreenFramebuffer failed because offscreen FBO was incomplete.
+[1989:1989:0417/212632.850528:ERROR:gles2_cmd_decoder.cc(3486)] Could not allocate offscreen buffer storage.
+[1989:1989:0417/212632.873210:ERROR:gles2_cmd_decoder.cc(5070)] GLES2DecoderImpl::ResizeOffscreenFramebuffer failed because offscreen FBO was incomplete.
+[1989:1989:0417/212632.873409:ERROR:gles2_cmd_decoder.cc(3486)] Could not allocate offscreen buffer storage.
+[1989:1989:0417/212632.882731:ERROR:gles2_cmd_decoder.cc(5070)] GLES2DecoderImpl::ResizeOffscreenFramebuffer failed because offscreen FBO was incomplete.
+[1989:1989:0417/212632.882848:ERROR:gles2_cmd_decoder.cc(3486)] Could not allocate offscreen buffer storage.
+[1989:1989:0417/212632.922662:ERROR:gles2_cmd_decoder.cc(5070)] GLES2DecoderImpl::ResizeOffscreenFramebuffer failed because offscreen FBO was incomplete.
+[1989:1989:0417/212632.922700:ERROR:gles2_cmd_decoder.cc(3486)] Could not allocate offscreen buffer storage.
+[I 21:27:07.419 NotebookApp] Saving file at /p3/p3.ipynb
+[W 21:27:07.422 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[1989:1989:0417/213132.767557:ERROR:gles2_cmd_decoder.cc(5070)] GLES2DecoderImpl::ResizeOffscreenFramebuffer failed because offscreen FBO was incomplete.
+[1989:1989:0417/213132.767600:ERROR:gles2_cmd_decoder.cc(3486)] Could not allocate offscreen buffer storage.
+[1989:1989:0417/213132.788192:ERROR:gles2_cmd_decoder.cc(5070)] GLES2DecoderImpl::ResizeOffscreenFramebuffer failed because offscreen FBO was incomplete.
+[1989:1989:0417/213132.788281:ERROR:gles2_cmd_decoder.cc(3486)] Could not allocate offscreen buffer storage.
+[1989:1989:0417/213132.798617:ERROR:gles2_cmd_decoder.cc(5070)] GLES2DecoderImpl::ResizeOffscreenFramebuffer failed because offscreen FBO was incomplete.
+[1989:1989:0417/213132.798693:ERROR:gles2_cmd_decoder.cc(3486)] Could not allocate offscreen buffer storage.
+[1989:1989:0417/213132.818780:ERROR:gles2_cmd_decoder.cc(5070)] GLES2DecoderImpl::ResizeOffscreenFramebuffer failed because offscreen FBO was incomplete.
+[1989:1989:0417/213132.818866:ERROR:gles2_cmd_decoder.cc(3486)] Could not allocate offscreen buffer storage.
+[I 21:33:07.414 NotebookApp] Saving file at /p3/p3.ipynb
+[W 21:33:07.417 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 21:37:07.406 NotebookApp] Saving file at /p3/p3.ipynb
+[W 21:37:07.409 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 21:39:07.410 NotebookApp] Saving file at /p3/p3.ipynb
+[W 21:39:07.417 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 21:43:07.401 NotebookApp] Saving file at /p3/p3.ipynb
+[W 21:43:07.408 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 21:47:07.417 NotebookApp] Saving file at /p3/p3.ipynb
+[W 21:47:07.432 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 21:51:07.417 NotebookApp] Saving file at /p3/p3.ipynb
+[W 21:51:07.419 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 21:51:31.754 NotebookApp] Saving file at /p3/p3.ipynb
+[W 21:51:31.757 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 21:53:07.438 NotebookApp] Saving file at /p3/p3.ipynb
+[W 21:53:07.444 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 21:55:07.729 NotebookApp] Saving file at /p3/p3.ipynb
+[W 21:55:07.732 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 21:55:18.151 NotebookApp] Saving file at /p3/p3.ipynb
+[W 21:55:18.159 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 21:55:18.843 NotebookApp] Saving file at /p3/p3.ipynb
+[W 21:55:18.849 NotebookApp] Saving untrusted notebook p3/p3.ipynb
