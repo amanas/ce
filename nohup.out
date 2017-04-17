@@ -218,3 +218,88 @@ Se ha abierto una nueva ventana en la sesión actual del navegador.
 [I 22:17:10.461 NotebookApp] Saving file at /p3/p3.ipynb
 [I 22:19:10.460 NotebookApp] Saving file at /p3/p3.ipynb
 [I 22:19:12.993 NotebookApp] Saving file at /p3/p3.ipynb
+[I 22:21:10.429 NotebookApp] Saving file at /p3/p3.ipynb
+[I 22:23:10.426 NotebookApp] Saving file at /p3/p3.ipynb
+[I 22:26:30.131 NotebookApp] Saving file at /p3/p3.ipynb
+[I 22:31:10.428 NotebookApp] Saving file at /p3/p3.ipynb
+[I 22:32:43.249 NotebookApp] Saving file at /p3/p3.ipynb
+[I 22:33:10.428 NotebookApp] Saving file at /p3/p3.ipynb
+[I 22:35:10.397 NotebookApp] Saving file at /p3/p3.ipynb
+[I 22:37:10.401 NotebookApp] Saving file at /p3/p3.ipynb
+[I 22:39:10.420 NotebookApp] Saving file at /p3/p3.ipynb
+[I 22:41:10.412 NotebookApp] Saving file at /p3/p3.ipynb
+[I 22:43:10.413 NotebookApp] Saving file at /p3/p3.ipynb
+[I 22:45:10.425 NotebookApp] Saving file at /p3/p3.ipynb
+[I 22:47:10.413 NotebookApp] Saving file at /p3/p3.ipynb
+[I 22:49:10.402 NotebookApp] Saving file at /p3/p3.ipynb
+[I 22:53:27.080 NotebookApp] Saving file at /p3/p3.ipynb
+[I 22:55:10.429 NotebookApp] Saving file at /p3/p3.ipynb
+[I 22:55:20.345 NotebookApp] Saving file at /p3/p3.ipynb
+[I 22:57:10.403 NotebookApp] Saving file at /p3/p3.ipynb
+[I 22:59:10.423 NotebookApp] Saving file at /p3/p3.ipynb
+[I 22:59:45.116 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:00:27.660 NotebookApp] Kernel interrupted: 2e8ba2b9-cdc7-4a97-a0d1-759045847009
+[C 23:00:56.225 NotebookApp] received signal 15, stopping
+[I 23:00:56.226 NotebookApp] Shutting down kernels
+[I 23:00:57.231 NotebookApp] Kernel shutdown: 2e8ba2b9-cdc7-4a97-a0d1-759045847009
+[I 23:02:40.465 NotebookApp] [nb_conda_kernels] enabled, 3 kernels found
+[I 23:02:40.699 NotebookApp] [jupyter_nbextensions_configurator] enabled 0.2.4
+[I 23:02:41.413 NotebookApp] [nb_anacondacloud] enabled
+[I 23:02:41.416 NotebookApp] [nb_conda] enabled
+[I 23:02:41.448 NotebookApp] ✓ nbpresent HTML export ENABLED
+[I 23:02:41.449 NotebookApp] ✓ nbpresent PDF export ENABLED
+[I 23:02:41.451 NotebookApp] Serving notebooks from local directory: /home/yolki/Escritorio/ai/ce
+[I 23:02:41.451 NotebookApp] 0 active kernels 
+[I 23:02:41.451 NotebookApp] The Jupyter Notebook is running at: http://localhost:8888/?token=8b2e204815c5a68f3a62127741b2a289d5ec0e74751f0c17
+[I 23:02:41.451 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 23:02:41.452 NotebookApp] 
+    
+    Copy/paste this URL into your browser when you connect for the first time,
+    to login with a token:
+        http://localhost:8888/?token=8b2e204815c5a68f3a62127741b2a289d5ec0e74751f0c17
+[I 23:02:41.843 NotebookApp] Accepting one-time-token-authenticated connection from 127.0.0.1
+Se ha abierto una nueva ventana en la sesión actual del navegador.
+[I 23:02:52.816 NotebookApp] Kernel started: ec773b15-dab4-4b88-95bb-6035ae369034
+[W 23:02:53.275 NotebookApp] 404 GET /static/components/MathJax/jax/element/mml/optable/BasicLatin.js?rev=2.6.0 (127.0.0.1) 12.34ms referer=http://localhost:8888/notebooks/p3/p3.ipynb
+[I 23:03:31.345 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:03:41.332 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:03:56.381 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:04:31.453 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:05:15.632 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:05:23.393 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:05:54.388 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:06:54.574 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:10:52.815 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:12:52.817 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:14:52.817 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:16:52.813 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:18:52.865 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:20:52.866 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:22:47.686 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:24:52.288 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:25:00.997 NotebookApp] Saving file at /p3/p3.ipynb
+[C 23:25:10.050 NotebookApp] received signal 15, stopping
+[I 23:25:10.050 NotebookApp] Shutting down kernels
+[I 23:25:11.056 NotebookApp] Kernel shutdown: ec773b15-dab4-4b88-95bb-6035ae369034
+[I 23:25:28.573 NotebookApp] [nb_conda_kernels] enabled, 3 kernels found
+[I 23:25:28.812 NotebookApp] [jupyter_nbextensions_configurator] enabled 0.2.4
+[I 23:25:29.432 NotebookApp] [nb_anacondacloud] enabled
+[I 23:25:29.435 NotebookApp] [nb_conda] enabled
+[I 23:25:29.469 NotebookApp] ✓ nbpresent HTML export ENABLED
+[I 23:25:29.469 NotebookApp] ✓ nbpresent PDF export ENABLED
+[I 23:25:29.471 NotebookApp] Serving notebooks from local directory: /home/yolki/Escritorio/ai/ce
+[I 23:25:29.471 NotebookApp] 0 active kernels 
+[I 23:25:29.472 NotebookApp] The Jupyter Notebook is running at: http://localhost:8888/?token=051e2ca62c68ec8c37c7599a2fd241ff47eed9a97db83ea2
+[I 23:25:29.472 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 23:25:29.472 NotebookApp] 
+    
+    Copy/paste this URL into your browser when you connect for the first time,
+    to login with a token:
+        http://localhost:8888/?token=051e2ca62c68ec8c37c7599a2fd241ff47eed9a97db83ea2
+[I 23:25:29.858 NotebookApp] Accepting one-time-token-authenticated connection from 127.0.0.1
+Se ha abierto una nueva ventana en la sesión actual del navegador.
+[I 23:25:37.503 NotebookApp] Kernel started: d3d2d6b7-4b2b-46dd-8777-e2aa7febb7a4
+[W 23:25:37.994 NotebookApp] 404 GET /static/components/MathJax/jax/element/mml/optable/BasicLatin.js?rev=2.6.0 (127.0.0.1) 13.56ms referer=http://localhost:8888/notebooks/p3/p3.ipynb
+[I 23:26:01.394 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:27:37.531 NotebookApp] Saving file at /p3/p3.ipynb
+[I 23:29:33.604 NotebookApp] Saving file at /p3/p3.ipynb
