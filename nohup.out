@@ -148,3 +148,73 @@ Se ha abierto una nueva ventana en la sesión actual del navegador.
 [W 21:55:18.159 NotebookApp] Saving untrusted notebook p3/p3.ipynb
 [I 21:55:18.843 NotebookApp] Saving file at /p3/p3.ipynb
 [W 21:55:18.849 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 21:56:03.101 NotebookApp] Kernel interrupted: 7007d89c-df6a-4c94-b32f-db2236a546c4
+[I 21:56:17.616 NotebookApp] Saving file at /p3/p3.ipynb
+[W 21:56:17.619 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[C 21:56:57.192 NotebookApp] received signal 15, stopping
+[I 21:56:57.193 NotebookApp] Shutting down kernels
+[I 21:56:58.198 NotebookApp] Kernel shutdown: 7007d89c-df6a-4c94-b32f-db2236a546c4
+[I 21:57:10.187 NotebookApp] [nb_conda_kernels] enabled, 3 kernels found
+[I 21:57:10.431 NotebookApp] [jupyter_nbextensions_configurator] enabled 0.2.4
+[I 21:57:11.067 NotebookApp] [nb_anacondacloud] enabled
+[I 21:57:11.070 NotebookApp] [nb_conda] enabled
+[I 21:57:11.104 NotebookApp] ✓ nbpresent HTML export ENABLED
+[I 21:57:11.104 NotebookApp] ✓ nbpresent PDF export ENABLED
+[I 21:57:11.107 NotebookApp] Serving notebooks from local directory: /home/yolki/Escritorio/ai/ce
+[I 21:57:11.107 NotebookApp] 0 active kernels 
+[I 21:57:11.107 NotebookApp] The Jupyter Notebook is running at: http://localhost:8888/?token=a7dd45e737e1b7e63cb0c484e76ca02155ac8bfe5d2e0396
+[I 21:57:11.107 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 21:57:11.108 NotebookApp] 
+    
+    Copy/paste this URL into your browser when you connect for the first time,
+    to login with a token:
+        http://localhost:8888/?token=a7dd45e737e1b7e63cb0c484e76ca02155ac8bfe5d2e0396
+Se ha abierto una nueva ventana en la sesión actual del navegador.
+[I 21:57:11.505 NotebookApp] Accepting one-time-token-authenticated connection from 127.0.0.1
+[W 21:57:13.840 NotebookApp] 404 GET /api/kernels/7007d89c-df6a-4c94-b32f-db2236a546c4/channels?session_id=FB77F9B22219483487CDD9D36A2C3961 (127.0.0.1): Kernel does not exist: 7007d89c-df6a-4c94-b32f-db2236a546c4
+[W 21:57:13.846 NotebookApp] 404 GET /api/kernels/7007d89c-df6a-4c94-b32f-db2236a546c4/channels?session_id=FB77F9B22219483487CDD9D36A2C3961 (127.0.0.1) 9.14ms referer=None
+[W 21:57:30.840 NotebookApp] Replacing stale connection: 7007d89c-df6a-4c94-b32f-db2236a546c4:FB77F9B22219483487CDD9D36A2C3961
+[C 21:58:54.448 NotebookApp] received signal 15, stopping
+[I 21:58:54.450 NotebookApp] Shutting down kernels
+[I 21:58:58.976 NotebookApp] [nb_conda_kernels] enabled, 3 kernels found
+[I 21:58:59.212 NotebookApp] [jupyter_nbextensions_configurator] enabled 0.2.4
+[I 21:58:59.822 NotebookApp] [nb_anacondacloud] enabled
+[I 21:58:59.828 NotebookApp] [nb_conda] enabled
+[I 21:58:59.861 NotebookApp] ✓ nbpresent HTML export ENABLED
+[I 21:58:59.861 NotebookApp] ✓ nbpresent PDF export ENABLED
+[I 21:58:59.863 NotebookApp] Serving notebooks from local directory: /home/yolki/Escritorio/ai/ce
+[I 21:58:59.863 NotebookApp] 0 active kernels 
+[I 21:58:59.864 NotebookApp] The Jupyter Notebook is running at: http://localhost:8888/?token=a590a23faaaf9d167f188819d9c5e615b3ccdb1ee23717da
+[I 21:58:59.864 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 21:58:59.864 NotebookApp] 
+    
+    Copy/paste this URL into your browser when you connect for the first time,
+    to login with a token:
+        http://localhost:8888/?token=a590a23faaaf9d167f188819d9c5e615b3ccdb1ee23717da
+[I 21:59:00.229 NotebookApp] Accepting one-time-token-authenticated connection from 127.0.0.1
+Se ha abierto una nueva ventana en la sesión actual del navegador.
+[6591:6591:0417/215900.614988:ERROR:broker_posix.cc(41)] Invalid node channel message
+[W 21:59:08.294 NotebookApp] Notebook p3/p3.ipynb is not trusted
+[I 21:59:10.394 NotebookApp] Kernel started: 2e8ba2b9-cdc7-4a97-a0d1-759045847009
+[W 21:59:10.702 NotebookApp] 404 GET /static/components/MathJax/jax/element/mml/optable/BasicLatin.js?rev=2.6.0 (127.0.0.1) 12.57ms referer=http://localhost:8888/notebooks/p3/p3.ipynb
+[I 22:01:10.455 NotebookApp] Saving file at /p3/p3.ipynb
+[W 22:01:10.459 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 22:03:10.419 NotebookApp] Saving file at /p3/p3.ipynb
+[W 22:03:10.422 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 22:05:10.429 NotebookApp] Saving file at /p3/p3.ipynb
+[W 22:05:10.432 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 22:06:13.546 NotebookApp] Saving file at /p3/p3.ipynb
+[W 22:06:13.549 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 22:09:10.423 NotebookApp] Saving file at /p3/p3.ipynb
+[W 22:09:10.430 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 22:11:10.418 NotebookApp] Saving file at /p3/p3.ipynb
+[W 22:11:10.421 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 22:13:10.429 NotebookApp] Saving file at /p3/p3.ipynb
+[W 22:13:10.431 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 22:15:10.884 NotebookApp] Saving file at /p3/p3.ipynb
+[W 22:15:10.887 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 22:15:38.540 NotebookApp] Saving file at /p3/p3.ipynb
+[W 22:15:38.541 NotebookApp] Saving untrusted notebook p3/p3.ipynb
+[I 22:17:10.461 NotebookApp] Saving file at /p3/p3.ipynb
+[I 22:19:10.460 NotebookApp] Saving file at /p3/p3.ipynb
+[I 22:19:12.993 NotebookApp] Saving file at /p3/p3.ipynb
