@@ -1,0 +1,84 @@
+((= IPython input/output style =))
+
+((*- extends 'base.tplx' -*))
+
+% Custom definitions
+((* block definitions *))
+    ((( super() )))
+
+    % Pygments definitions
+    ((( resources.latex.pygments_definitions )))
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+    
+    \usepackage[framemethod=tikz]{mdframed}
+
+((* endblock definitions *))
+
+%===============================================================================
+% Input
+%===============================================================================
+
+
+
+((* block input scoped *))
+    ((( add_prompt(cell.source | highlight_code(strip_verbatim=True), cell, 'In ', 'incolor') )))
+((* endblock input *))
+
+
+%===============================================================================
+% Output
+%===============================================================================
+
+
+
+((* block execute_result scoped *))
+((*- for type in output.data | filter_data_type -*))
+
+        ((*- if type in ['text/plain']*))        
+            ((( add_prompt(output.data['text/plain'] | escape_latex, cell, 'Out', 'outcolor') )))
+        ((* else -*)) 
+            \begingroup
+            \fontsize{8pt}{10pt}
+            \begin{mdframed}[hidealllines=true,backgroundcolor=green!10]
+            ((( super() )))
+            \end{mdframed}
+            \endgroup
+        ((*- endif -*))
+    ((*- endfor -*))
+((* endblock execute_result *))
+
+
+
+%==============================================================================
+% Support Macros
+%==============================================================================
+
+% Name: draw_prompt
+% Purpose: Renders an output/input prompt
+((* macro add_prompt(text, cell, prompt, prompt_color) -*))
+    ((*- if cell.execution_count is defined -*))
+    ((*- set execution_count = "" ~ (cell.execution_count | replace(None, " ")) -*))
+    ((*- else -*))
+    ((*- set execution_count = " " -*))
+    ((*- endif -*))
+    ((*- set indention =  " " * (execution_count | length + 7) -*))
+    ((*- set indention =  "" -*))
+    
+ 
+
+
+\begingroup
+\fontsize{8pt}{10pt}
+\begin{mdframed}[hidealllines=true,backgroundcolor=blue!5]
+
+\begin{Verbatim}[commandchars=\\\{\}]
+((( text  ))) 
+\end{Verbatim}
+
+\end{mdframed}
+\endgroup
+
+((*- endmacro *))
